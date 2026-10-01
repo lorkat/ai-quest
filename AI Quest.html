@@ -1,0 +1,2221 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AI Quest</title>
+<meta name="description" content="Learn AI, raise your CGPA and practise English through quests.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+:root {
+  --ink: #16213e; --ink-soft: #4a5572; --paper: #f5f7fb; --card: #ffffff; --line: #d9e0ea;
+  --blue: #2346d8; --blue-hover: #1d3cc0; --blue-shadow: #172f9c; --blue-soft: #e7ecfd; --on-blue: #ffffff;
+  --marker: #ffd43b; --marker-soft: #fff6cc;
+  --green: #13875b; --green-soft: #e3f4ec; --red: #c8372d; --red-soft: #fbe9e7;
+  --orange: #b35305; --orange-soft: #fdeedd; --violet: #6d3fd6; --violet-soft: #efe8fd;
+  --code-bg: #0f1730; --code-ink: #e6ebff; --grid: rgb(35 70 216 / 0.05);
+  --track: #eef1f6; --shadow: 0 20px 60px -30px rgb(22 33 62 / 0.35);
+  --font-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --font-sans: "Atkinson Hyperlegible", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "Cascadia Code", Consolas, monospace;
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ink: #e8ecf7; --ink-soft: #a7b0c8; --paper: #0e1424; --card: #161e35; --line: #2a3456;
+    --blue: #7b93ff; --blue-hover: #95a8ff; --blue-shadow: #4a5fc4; --blue-soft: #1e2850; --on-blue: #0b1020;
+    --marker: #ffd43b; --marker-soft: #3a3214;
+    --green: #45d49a; --green-soft: #13342a; --red: #ff8578; --red-soft: #3b1c1c;
+    --orange: #ffab5e; --orange-soft: #3a2a16; --violet: #b9a0ff; --violet-soft: #2a2150;
+    --code-bg: #0a0f1d; --code-ink: #e6ebff; --grid: rgb(123 147 255 / 0.05);
+    --track: #232c47; --shadow: 0 20px 60px -30px rgb(0 0 0 / 0.7);
+  }
+}
+:root[data-theme="dark"] {
+  --ink: #e8ecf7; --ink-soft: #a7b0c8; --paper: #0e1424; --card: #161e35; --line: #2a3456;
+  --blue: #7b93ff; --blue-hover: #95a8ff; --blue-shadow: #4a5fc4; --blue-soft: #1e2850; --on-blue: #0b1020;
+  --marker: #ffd43b; --marker-soft: #3a3214;
+  --green: #45d49a; --green-soft: #13342a; --red: #ff8578; --red-soft: #3b1c1c;
+  --orange: #ffab5e; --orange-soft: #3a2a16; --violet: #b9a0ff; --violet-soft: #2a2150;
+  --code-bg: #0a0f1d; --code-ink: #e6ebff; --grid: rgb(123 147 255 / 0.05);
+  --track: #232c47; --shadow: 0 20px 60px -30px rgb(0 0 0 / 0.7);
+}
+*, *::before, *::after { box-sizing: inherit; }
+html { height: 100%; scroll-padding-top: env(safe-area-inset-top, 0px); }
+body {
+  margin: 0; min-height: 100%; color: var(--ink); font-family: var(--font-sans); font-size: 16px; line-height: 1.5;
+  background-color: var(--paper);
+  background-image: linear-gradient(to right, var(--grid) 1px, transparent 1px), linear-gradient(to bottom, var(--grid) 1px, transparent 1px);
+  background-size: 24px 24px;
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3, h4 { font-family: var(--font-display); letter-spacing: -0.01em; margin: 0; line-height: 1.15; }
+h1 { font-size: clamp(1.9rem, 4vw, 2.5rem); font-weight: 800; }
+h2 { font-size: 1.3rem; font-weight: 800; }
+h3 { font-size: 1.15rem; font-weight: 800; }
+p { margin: 0; }
+a { color: var(--blue); }
+img { max-width: 100%; }
+button, input, select, textarea { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; border-radius: 6px; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+.muted { color: var(--ink-soft); }
+.small { font-size: 0.875rem; }
+.bold { font-weight: 700; }
+.mono { font-family: var(--font-mono); }
+.row { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; }
+.between { justify-content: space-between; }
+.stack > * + * { margin-top: 1rem; }
+.stack-sm > * + * { margin-top: 0.5rem; }
+.grid { display: grid; gap: 1.25rem; }
+@media (min-width: 900px) {
+  .g-2 { grid-template-columns: 1fr 1fr; }
+  .g-main { grid-template-columns: 1.4fr 1fr; }
+  .g-side { grid-template-columns: 1fr 1.3fr; }
+  .g-quest { grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); }
+}
+@media (min-width: 640px) { .g-3 { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1100px) { .g-3 { grid-template-columns: repeat(3, 1fr); } }
+
+/* layout */
+.shell { display: block; }
+@media (min-width: 1024px) { .shell { display: flex; } }
+main { width: 100%; max-width: 1180px; margin: 0 auto; padding: 1.5rem 1rem 7rem; }
+@media (min-width: 640px) { main { padding: 2rem 1.5rem 7rem; } }
+@media (min-width: 1024px) { main { padding: 2.5rem 2.5rem 7rem; } }
+.topbar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 30; display: flex; align-items: center; justify-content: space-between; padding: 0.7rem 1rem; background: var(--card); border-bottom: 1px solid var(--line); }
+@media (min-width: 1024px) { .topbar { display: none; } }
+.logo { font-family: var(--font-display); font-weight: 800; font-size: 1.35rem; color: var(--ink); text-decoration: none; }
+.side { display: none; background: var(--card); border-right: 1px solid var(--line); padding: 1rem; }
+.side.open { display: block; position: fixed; inset: calc(56px + env(safe-area-inset-top, 0px)) 0 0 0; z-index: 29; overflow-y: auto; padding-bottom: calc(1rem + env(safe-area-inset-bottom, 0px)); }
+@media (min-width: 1024px) {
+  .side, .side.open { display: block; position: sticky; top: 0; inset: auto; width: 260px; flex-shrink: 0; height: 100vh; overflow-y: auto; }
+}
+.side .logo { display: none; margin-bottom: 1.1rem; font-size: 1.6rem; }
+@media (min-width: 1024px) { .side .logo { display: block; } }
+.status { background: var(--paper); border-radius: 14px; padding: 0.8rem; }
+.nav { list-style: none; margin: 1rem 0 0; padding: 0; }
+.nav a { display: flex; gap: 0.7rem; align-items: center; padding: 0.55rem 0.75rem; border-radius: 12px; font-weight: 700; color: var(--ink); text-decoration: none; }
+.nav a:hover { background: var(--blue-soft); color: var(--blue); }
+.nav a[aria-current="page"] { background: var(--blue); color: var(--on-blue); }
+.side-foot { margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--line); font-size: 0.875rem; }
+
+/* components */
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 1.25rem; }
+.card.strong { border: 2px solid var(--ink); }
+.card.flush { padding: 0; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.45rem; border-radius: 12px; padding: 0.6rem 1rem; font-weight: 700; cursor: pointer; border: 2px solid transparent; text-decoration: none; line-height: 1.2; }
+.btn:disabled { opacity: 0.5; pointer-events: none; }
+.btn-primary { background: var(--blue); color: var(--on-blue); box-shadow: 0 2px 0 var(--blue-shadow); }
+.btn-primary:hover { background: var(--blue-hover); }
+.btn-primary:active { transform: translateY(1px); box-shadow: none; }
+.btn-secondary { background: var(--card); border-color: var(--line); color: var(--ink); }
+.btn-secondary:hover { border-color: var(--blue); color: var(--blue); }
+.btn-ghost { background: transparent; color: var(--ink-soft); padding: 0.35rem 0.6rem; font-size: 0.9rem; border-radius: 10px; }
+.btn-ghost:hover { background: var(--blue-soft); color: var(--blue); }
+.btn-danger { background: transparent; color: var(--red); padding: 0.35rem 0.6rem; font-size: 0.9rem; border-radius: 10px; }
+.btn-danger:hover { background: var(--red-soft); }
+.btn-lg { padding: 0.8rem 1.4rem; font-size: 1.1rem; }
+.btn-block { width: 100%; }
+.input { width: 100%; border: 2px solid var(--line); background: var(--card); border-radius: 12px; padding: 0.55rem 0.75rem; }
+.input:focus { border-color: var(--blue); outline: none; }
+textarea.input { resize: vertical; }
+label.field > span { display: block; font-weight: 700; margin-bottom: 0.3rem; font-size: 0.95rem; }
+.badge { display: inline-flex; align-items: center; gap: 0.3rem; border-radius: 999px; padding: 0.12rem 0.65rem; font-size: 0.85rem; font-weight: 700; }
+.d-easy { background: var(--green-soft); color: var(--green); }
+.d-medium { background: var(--blue-soft); color: var(--blue); }
+.d-hard { background: var(--orange-soft); color: var(--orange); }
+.d-boss { background: var(--violet-soft); color: var(--violet); }
+.b-done { background: var(--green-soft); color: var(--green); }
+.b-marker { background: var(--marker); color: #16213e; }
+.pbar { width: 100%; height: 10px; background: var(--track); border-radius: 999px; overflow: hidden; }
+.pbar > div { height: 100%; background: var(--blue); border-radius: 999px; }
+.pbar.green > div { background: var(--green); }
+.xpbar { width: 100%; height: 16px; background: var(--track); border-radius: 999px; overflow: hidden; }
+.xpbar.sm { height: 12px; }
+.xpbar.lg { height: 20px; }
+.xpbar > div { height: 100%; background: linear-gradient(180deg, #ffe066, var(--marker) 55%, #f5c518); border-radius: 999px 6px 6px 999px; transition: width 700ms cubic-bezier(.2,.8,.2,1); }
+.note { border-radius: 12px; padding: 0.7rem 0.9rem; }
+.note.ok { background: var(--green-soft); color: var(--green); }
+.note.bad { background: var(--red-soft); color: var(--red); }
+.note.warn { background: var(--orange-soft); color: var(--orange); }
+.note.info { background: var(--blue-soft); color: var(--ink); }
+.empty { border: 2px dashed var(--line); border-radius: 18px; padding: 1.4rem; text-align: center; }
+.stat { background: var(--paper); border-radius: 12px; padding: 0.55rem; text-align: center; }
+.stat dt { font-size: 0.85rem; color: var(--ink-soft); }
+.stat dd { margin: 0; font-size: 1.25rem; font-weight: 800; }
+.list { list-style: none; margin: 0; padding: 0; }
+.list > li + li { margin-top: 0.5rem; }
+.pill-row { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.chip { border-radius: 999px; padding: 0.3rem 0.8rem; font-weight: 700; border: 2px solid var(--line); background: var(--card); cursor: pointer; }
+.chip[aria-selected="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.item { border: 2px solid var(--line); border-radius: 14px; padding: 0.7rem 0.9rem; }
+.item.pass { border-color: var(--green); background: var(--green-soft); }
+.item.fail { border-color: var(--red); background: var(--red-soft); }
+.item.locked { opacity: 0.6; }
+.item.weak { border: none; background: var(--red-soft); }
+.choice { display: flex; align-items: center; gap: 0.55rem; border: 2px solid var(--line); border-radius: 12px; padding: 0.5rem 0.75rem; cursor: pointer; }
+.choice:has(input:checked) { border-color: var(--blue); background: var(--blue-soft); }
+.choice input { accent-color: var(--blue); }
+table { width: 100%; border-collapse: collapse; text-align: left; }
+th { font-size: 0.85rem; color: var(--ink-soft); font-weight: 700; }
+th, td { padding: 0.65rem 1rem; border-bottom: 1px solid var(--line); }
+tr.me { background: var(--marker-soft); font-weight: 700; }
+.scroll-x { overflow-x: auto; }
+
+/* path trail (signature) */
+.trail { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; list-style: none; margin: 0; padding: 0; }
+@media (min-width: 640px) { .trail.wide { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 1200px) { .trail.wide { grid-template-columns: repeat(5, 1fr); } }
+.stop { display: flex; align-items: center; gap: 0.7rem; height: 100%; border: 2px solid var(--line); background: var(--card); border-radius: 16px; padding: 0.7rem; color: var(--ink); text-decoration: none; }
+a.stop:hover { border-color: var(--blue); }
+.stop.active { border-color: var(--blue); background: var(--blue-soft); }
+.stop.done { border-color: var(--green); background: var(--green-soft); }
+.stop-icon { position: relative; display: grid; place-items: center; width: 44px; height: 44px; flex-shrink: 0; border-radius: 50%; background: var(--card); box-shadow: 0 0 0 2px var(--line); font-size: 1.3rem; }
+.stop-num { position: absolute; top: -6px; left: -6px; display: grid; place-items: center; width: 20px; height: 20px; border-radius: 50%; background: var(--ink); color: var(--paper); font-size: 11px; font-weight: 700; }
+.stop-title { display: block; font-weight: 700; line-height: 1.2; }
+
+/* markdown + code */
+.md p { margin: 0.45rem 0; line-height: 1.6; }
+.md ul, .md ol { margin: 0.4rem 0; padding-left: 1.25rem; }
+.md code, code.inline { font-family: var(--font-mono); font-size: 0.88em; background: var(--blue-soft); padding: 0.05rem 0.3rem; border-radius: 4px; }
+.md pre, pre.code { font-family: var(--font-mono); font-size: 0.85rem; background: var(--code-bg); color: var(--code-ink); padding: 0.75rem 0.9rem; border-radius: 12px; overflow-x: auto; margin: 0.6rem 0; white-space: pre; }
+.md pre code { background: none; padding: 0; color: inherit; }
+.md h4 { margin: 0.6rem 0 0.3rem; font-size: 1rem; }
+.editor { border-radius: 18px; overflow: hidden; background: var(--code-bg); border: 1px solid var(--line); }
+.editor-head { display: flex; justify-content: space-between; gap: 1rem; padding: 0.5rem 1rem; border-bottom: 1px solid rgb(255 255 255 / 0.1); color: rgb(255 255 255 / 0.7); font-size: 0.85rem; }
+.editor-body { display: flex; }
+.gutter { padding: 0.75rem 0.5rem 0.75rem 0.75rem; text-align: right; font-family: var(--font-mono); font-size: 0.875rem; line-height: 1.5rem; color: rgb(255 255 255 / 0.3); user-select: none; white-space: pre; }
+.code-input { flex: 1; width: 100%; min-height: 18rem; border: 0; outline: none; resize: vertical; background: transparent; color: var(--code-ink); caret-color: var(--marker); padding: 0.75rem 0.75rem 0.75rem 0; font-family: var(--font-mono); font-size: 0.875rem; line-height: 1.5rem; white-space: pre; overflow-x: auto; tab-size: 4; }
+.output { font-family: var(--font-mono); font-size: 0.875rem; white-space: pre-wrap; max-height: 18rem; overflow: auto; margin: 0.5rem 0 0; }
+.err { color: var(--red); }
+
+/* reward */
+.reward { position: relative; border: 2px solid var(--green); background: var(--green-soft); border-radius: 18px; padding: 1.25rem; }
+.xp-pop { position: absolute; top: -16px; right: 18px; background: var(--marker); color: #16213e; border-radius: 999px; padding: 0.25rem 0.8rem; font-family: var(--font-display); font-weight: 800; font-size: 1.2rem; animation: xp-pop 1.8s ease-out forwards; }
+@keyframes xp-pop {
+  0% { transform: translateY(8px) scale(.9); opacity: 0; }
+  20% { transform: translateY(0) scale(1.08); opacity: 1; }
+  80% { transform: translateY(-6px) scale(1); opacity: 1; }
+  100% { transform: translateY(-18px); opacity: 0; }
+}
+
+/* tutor */
+.tutor-fab { position: fixed; right: 1rem; bottom: calc(1rem + env(safe-area-inset-bottom, 0px)); z-index: 40; display: inline-flex; gap: 0.5rem; align-items: center; background: var(--ink); color: var(--paper); border: 0; border-radius: 999px; padding: 0.8rem 1.1rem; font-weight: 700; cursor: pointer; box-shadow: 0 10px 30px -10px rgb(0 0 0 / 0.5); }
+.tutor-fab:hover { background: var(--blue); color: var(--on-blue); }
+.tutor { position: fixed; inset: 0; z-index: 50; display: flex; flex-direction: column; background: var(--card); padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+@media (min-width: 640px) {
+  .tutor { inset: auto; right: 1rem; bottom: calc(5rem + env(safe-area-inset-bottom, 0px)); width: 430px; height: min(660px, 80vh); border: 1px solid var(--line); border-radius: 18px; box-shadow: var(--shadow); padding: 0; }
+}
+.tutor-head { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 1rem; border-bottom: 1px solid var(--line); }
+.tutor-modes { display: flex; gap: 0.4rem; overflow-x: auto; padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--line); }
+.mode { flex-shrink: 0; border: 0; border-radius: 999px; padding: 0.3rem 0.8rem; font-weight: 700; font-size: 0.9rem; background: var(--blue-soft); color: var(--blue); cursor: pointer; }
+.mode[aria-selected="true"] { background: var(--blue); color: var(--on-blue); }
+.tutor-log { flex: 1; overflow-y: auto; padding: 0.75rem 1rem; }
+.tutor-log > * + * { margin-top: 0.75rem; }
+.msg-user { margin-left: 2rem; background: var(--blue-soft); border-radius: 12px; padding: 0.5rem 0.75rem; white-space: pre-wrap; }
+.tutor-form { display: flex; gap: 0.5rem; padding: 0.75rem; border-top: 1px solid var(--line); }
+.tutor-form textarea { flex: 1; resize: none; }
+
+/* toast */
+.toasts { position: fixed; left: 50%; transform: translateX(-50%); top: calc(1rem + env(safe-area-inset-top, 0px)); z-index: 60; display: grid; gap: 0.5rem; width: min(92vw, 420px); }
+.toast { background: var(--ink); color: var(--paper); border-radius: 14px; padding: 0.7rem 1rem; font-weight: 700; box-shadow: var(--shadow); }
+
+/* landing */
+.landing { max-width: 1180px; margin: 0 auto; padding: 1.5rem 1rem 4rem; }
+.hero { display: grid; gap: 2.5rem; align-items: center; margin-top: 3rem; }
+@media (min-width: 1000px) { .hero { grid-template-columns: 1.05fr 1fr; } }
+.hero h1 { font-size: clamp(2.6rem, 6vw, 4rem); line-height: 1.02; }
+.hero-card { background: var(--card); border: 1px solid var(--line); border-radius: 24px; padding: 1.25rem; box-shadow: var(--shadow); }
+.band { margin-top: 4rem; border-radius: 24px; padding: 2rem; background: var(--ink); color: var(--paper); }
+.band p { opacity: 0.8; }
+
+@media (prefers-reduced-motion: reduce) {
+  .xpbar > div { transition: none; }
+  .xp-pop { animation: none; }
+}
+
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div id="toasts" class="toasts" aria-live="polite"></div>
+<script>window.__CONTENT__ = {"COURSES": [{"id": "python", "title": "Python", "summary": "Variables, conditions, loops, lists, functions and dictionaries.", "icon": "🐍", "modules": [{"id": "python-basics", "title": "Basics", "lessons": [{"id": "py-variables", "title": "Variables", "body": "A variable is a name that stores a value. You create it with `=`. Python reads the right side first, then saves the result in the name on the left. You can change the value later.", "example": "score = 70\nscore = score + 5\nprint(score)  # 75", "check": {"prompt": "What does this print?\n\nx = 3\nx = x * 2\nprint(x)", "options": ["3", "6", "x * 2", "Error"], "answerIndex": 1, "explanation": "Python calculates x * 2 = 6 first, then stores 6 back in x."}, "quests": [{"id": "py-intro", "title": "Introduce yourself", "difficulty": "easy", "topic": "Variables", "instructions": "Create two variables: `name` with the value `\"Aina\"` and `age` with the value `20`.\n\nThen print exactly:\n\n`My name is Aina and I am 20 years old.`", "starterCode": "# Create name and age here\n\n", "hints": ["Text needs quotes. Numbers do not.", "An f-string lets you put variables inside text: f\"Hello {name}\""], "tests": [{"name": "Prints the sentence", "kind": "output", "expected": "My name is Aina and I am 20 years old."}, {"name": "name variable is correct", "kind": "expr", "expr": "name", "expected": "'Aina'"}, {"name": "age is a number", "kind": "expr", "expr": "age", "expected": "20"}], "lang": "python"}]}, {"id": "py-input", "title": "Input and types", "body": "`input()` reads what the user types. It always gives you a string (text), even if the user types a number. Use `int()` or `float()` to turn text into a number before doing maths.", "example": "age = int(input(\"Age: \"))\nprint(age + 1)", "check": {"prompt": "The user types 4 and 5. What does this print?\n\na = input()\nb = input()\nprint(a + b)", "options": ["9", "45", "Error", "a + b"], "answerIndex": 1, "explanation": "input() returns strings. Adding two strings joins them: '4' + '5' = '45'."}, "quests": [{"id": "py-add-inputs", "title": "Add two numbers", "difficulty": "easy", "topic": "Input and types", "instructions": "Read two whole numbers with `input()` (one per line). Print their sum.\n\nExample: if the user types `3` and `4`, print `7`.", "starterCode": "a = input()\nb = input()\n\n# print the sum\n", "hints": ["What type does input() give you?", "Wrap each input with int(...) before adding."], "tests": [{"name": "3 + 4", "kind": "output", "stdin": "3\n4\n", "expected": "7"}, {"name": "10 + -2", "kind": "output", "stdin": "10\n-2\n", "expected": "8"}, {"name": "0 + 0", "kind": "output", "stdin": "0\n0\n", "expected": "0"}], "lang": "python"}]}, {"id": "py-conditions", "title": "Conditions", "body": "`if` runs code only when a condition is True. `elif` checks another condition. `else` runs when nothing above was True. The code inside each block must be indented.", "example": "mark = 72\nif mark >= 80:\n    print(\"A\")\nelif mark >= 50:\n    print(\"Pass\")\nelse:\n    print(\"Fail\")", "check": {"prompt": "mark = 50. Which condition is True?", "options": ["mark > 50", "mark >= 50", "mark < 50", "None of them"], "answerIndex": 1, "explanation": ">= means 'greater than OR equal to'. 50 >= 50 is True, but 50 > 50 is False."}, "quests": [{"id": "py-pass-fail", "title": "Pass or fail", "difficulty": "easy", "topic": "Conditions", "instructions": "Read one whole number `score` with `input()`.\n\nPrint `Pass` if the score is 50 or more. Otherwise print `Fail`.", "starterCode": "score = int(input())\n\n", "hints": ["Use if / else.", "50 must pass, so compare with >= not >."], "tests": [{"name": "80 passes", "kind": "output", "stdin": "80\n", "expected": "Pass"}, {"name": "50 passes (boundary)", "kind": "output", "stdin": "50\n", "expected": "Pass"}, {"name": "49 fails", "kind": "output", "stdin": "49\n", "expected": "Fail"}], "lang": "python"}, {"id": "py-grade", "title": "Grade calculator", "difficulty": "medium", "topic": "Conditions", "instructions": "Write a function `get_grade(score)` that **returns** a grade:\n\n- 80 and above → `\"A\"`\n- 65 to 79 → `\"B\"`\n- 50 to 64 → `\"C\"`\n- below 50 → `\"F\"`", "starterCode": "def get_grade(score):\n    pass\n", "hints": ["Check the highest grade first, then go down with elif.", "Use return, not print. The tests read the returned value."], "tests": [{"name": "85 → A", "kind": "expr", "expr": "get_grade(85)", "expected": "'A'"}, {"name": "80 → A (boundary)", "kind": "expr", "expr": "get_grade(80)", "expected": "'A'"}, {"name": "79 → B", "kind": "expr", "expr": "get_grade(79)", "expected": "'B'"}, {"name": "50 → C (boundary)", "kind": "expr", "expr": "get_grade(50)", "expected": "'C'"}, {"name": "10 → F", "kind": "expr", "expr": "get_grade(10)", "expected": "'F'"}], "lang": "python"}]}]}, {"id": "python-collections", "title": "Loops and lists", "lessons": [{"id": "py-loops", "title": "For loops", "body": "A `for` loop repeats code once for each item in a list. A common pattern is: start a counter at 0, then add to it inside the loop.", "example": "marks = [60, 45, 90]\ntotal = 0\nfor m in marks:\n    total += m\nprint(total)  # 195", "check": {"prompt": "for n in [1, 2, 3]:\n    print(n * 10)\n\nHow many lines are printed?", "options": ["1", "3", "10", "30"], "answerIndex": 1, "explanation": "The loop runs once per item. There are 3 items, so 3 lines."}, "quests": [{"id": "py-count-above", "title": "Count the high marks", "difficulty": "easy", "topic": "Loops", "instructions": "Write `count_above(marks, limit)` that returns how many marks are **greater than** `limit`.\n\n`count_above([40, 75, 90], 60)` → `2`", "starterCode": "def count_above(marks, limit):\n    count = 0\n    # loop here\n    return count\n", "hints": ["Loop over marks and use an if inside the loop.", "When the mark is > limit, do count += 1."], "tests": [{"name": "Basic", "kind": "expr", "expr": "count_above([40, 75, 90], 60)", "expected": "2"}, {"name": "Equal is not above", "kind": "expr", "expr": "count_above([60, 60, 61], 60)", "expected": "1"}, {"name": "Empty list", "kind": "expr", "expr": "count_above([], 50)", "expected": "0"}], "lang": "python"}]}, {"id": "py-lists", "title": "Lists", "body": "A list stores many values in order: `marks = [70, 55, 90]`. `marks[0]` is the first item. `len(marks)` gives the number of items. You can loop over a list to find things yourself.", "example": "marks = [70, 55, 90]\nprint(marks[0])   # 70\nprint(len(marks)) # 3", "check": {"prompt": "names = ['Ali', 'Mei', 'Raj']\nprint(names[2])", "options": ["Ali", "Mei", "Raj", "Error"], "answerIndex": 2, "explanation": "Indexes start at 0, so index 2 is the third item: 'Raj'."}, "quests": [{"id": "py-highest", "title": "Find the highest mark", "difficulty": "medium", "topic": "Lists", "instructions": "Write `highest(marks)` that returns the biggest number in the list.\n\nRule: **do not use `max()`**. Use a loop.\n\nThe list always has at least one number.", "starterCode": "def highest(marks):\n    pass\n", "hints": ["Start with best = marks[0].", "Loop through marks. If a mark is bigger than best, replace best."], "tests": [{"name": "No max() allowed", "kind": "forbid", "pattern": "max(", "message": "Do not use max(). Use a loop."}, {"name": "Basic", "kind": "expr", "expr": "highest([70, 95, 60])", "expected": "95"}, {"name": "Highest is first", "kind": "expr", "expr": "highest([99, 1, 2])", "expected": "99"}, {"name": "Negative numbers", "kind": "expr", "expr": "highest([-5, -2, -9])", "expected": "-2"}], "lang": "python"}, {"id": "py-initials", "title": "Name initials", "difficulty": "medium", "topic": "Strings", "instructions": "Write `initials(full_name)` that returns the capital first letter of each word.\n\n`initials(\"siti nur aisyah\")` → `\"SNA\"`", "starterCode": "def initials(full_name):\n    pass\n", "hints": ["full_name.split() gives a list of words.", "word[0] is the first letter. .upper() makes it capital."], "tests": [{"name": "Three words", "kind": "expr", "expr": "initials('siti nur aisyah')", "expected": "'SNA'"}, {"name": "Two words", "kind": "expr", "expr": "initials('Tan Wei')", "expected": "'TW'"}, {"name": "Extra spaces", "kind": "expr", "expr": "initials('  ravi   kumar ')", "expected": "'RK'"}], "lang": "python"}]}]}, {"id": "python-functions", "title": "Functions and dictionaries", "lessons": [{"id": "py-dicts", "title": "Dictionaries", "body": "A dictionary stores pairs: a key and its value. `ages = {'Ali': 20}`. Read with `ages['Ali']`. `dict.get(key, 0)` returns 0 when the key is missing, which is useful for counting.", "example": "counts = {}\nfor fruit in ['apple', 'kiwi', 'apple']:\n    counts[fruit] = counts.get(fruit, 0) + 1\nprint(counts)  # {'apple': 2, 'kiwi': 1}", "check": {"prompt": "d = {'a': 1}\nprint(d.get('b', 0))", "options": ["1", "0", "None", "KeyError"], "answerIndex": 1, "explanation": "'b' is not a key, so .get returns the default value 0."}, "quests": [{"id": "py-word-count", "title": "Word counter", "difficulty": "hard", "topic": "Dictionaries", "instructions": "Write `word_count(text)` that returns a dictionary of how many times each word appears.\n\nIgnore capital letters: \"AI\" and \"ai\" are the same word.\n\n`word_count(\"AI is fun ai\")` → `{\"ai\": 2, \"is\": 1, \"fun\": 1}`", "starterCode": "def word_count(text):\n    counts = {}\n    return counts\n", "hints": ["Make the text lowercase first, then split it.", "counts[word] = counts.get(word, 0) + 1"], "tests": [{"name": "Mixed case", "kind": "expr", "expr": "word_count('AI is fun ai')", "expected": "{'ai': 2, 'is': 1, 'fun': 1}"}, {"name": "One word", "kind": "expr", "expr": "word_count('data')", "expected": "{'data': 1}"}, {"name": "Empty text", "kind": "expr", "expr": "word_count('')", "expected": "{}"}], "lang": "python"}, {"id": "py-boss-report", "title": "Boss: class report", "difficulty": "boss", "topic": "Functions", "instructions": "Write `report(marks)` that returns a dictionary with:\n\n- `\"count\"`: how many marks\n- `\"average\"`: the average, rounded to 2 decimal places\n- `\"highest\"`: the highest mark\n- `\"passed\"`: how many marks are 50 or above\n\nIf the list is empty, return `{\"count\": 0, \"average\": 0, \"highest\": None, \"passed\": 0}`.", "starterCode": "def report(marks):\n    pass\n", "hints": ["Handle the empty list first, with an early return.", "round(total / len(marks), 2) gives the average."], "tests": [{"name": "Normal class", "kind": "expr", "expr": "report([70, 45, 90])", "expected": "{'count': 3, 'average': 68.33, 'highest': 90, 'passed': 2}"}, {"name": "Empty class", "kind": "expr", "expr": "report([])", "expected": "{'count': 0, 'average': 0, 'highest': None, 'passed': 0}"}, {"name": "Boundary 50", "kind": "expr", "expr": "report([50])", "expected": "{'count': 1, 'average': 50.0, 'highest': 50, 'passed': 1}"}], "lang": "python"}]}]}]}, {"id": "numpy", "title": "NumPy", "summary": "Fast number arrays and vectorised maths.", "icon": "🔢", "modules": [{"id": "numpy-arrays", "title": "Arrays", "lessons": [{"id": "np-arrays", "title": "Arrays and vector maths", "body": "A NumPy array is like a list, but maths works on every item at once. `np.array([1, 2]) * 2` gives `[2, 4]`. No loop needed. Use `.tolist()` to turn an array back into a list. To pick items, make a mask: `a[a.gt(2)]` keeps values above 2 (in real NumPy you can also write `a[a > 2]`).", "example": "import numpy as np\na = np.array([1, 2, 3])\nprint(a * 10)   # [10 20 30]\nprint(a.mean()) # 2.0", "check": {"prompt": "np.array([1, 2, 3]) + 1 gives…", "options": ["[1, 2, 3, 1]", "[2, 3, 4]", "Error", "7"], "answerIndex": 1, "explanation": "NumPy adds 1 to every item. This is called broadcasting."}, "quests": [{"id": "np-double", "title": "Double everything", "difficulty": "easy", "topic": "NumPy arrays", "instructions": "Write `double(values)` that takes a normal list and returns a NumPy array with every value multiplied by 2.\n\nUse NumPy, not a loop.", "starterCode": "import numpy as np\n\ndef double(values):\n    pass\n", "hints": ["np.array(values) makes an array.", "Multiply the whole array by 2."], "tests": [{"name": "Returns an array", "kind": "expr", "expr": "type(double([1])).__name__", "expected": "'ndarray'"}, {"name": "Values doubled", "kind": "expr", "expr": "double([1, 2, 3]).tolist()", "expected": "[2, 4, 6]"}], "lang": "python", "lite": true}, {"id": "np-normalize", "title": "Min-max scaling", "difficulty": "medium", "topic": "NumPy arrays", "instructions": "Write `normalize(arr)` that scales a NumPy array to the range 0–1:\n\n`(x - min) / (max - min)`\n\n`normalize(np.array([2, 4, 6]))` → `[0.0, 0.5, 1.0]`", "starterCode": "import numpy as np\n\ndef normalize(arr):\n    pass\n", "hints": ["arr.min() and arr.max() give the smallest and biggest values.", "The formula works on the whole array at once."], "tests": [{"name": "Basic", "kind": "expr", "expr": "[round(x, 2) for x in normalize(np.array([2, 4, 6])).tolist()]", "expected": "[0.0, 0.5, 1.0]"}, {"name": "Unsorted", "kind": "expr", "expr": "[round(x, 2) for x in normalize(np.array([10, 0, 5])).tolist()]", "expected": "[1.0, 0.0, 0.5]"}], "lang": "python", "lite": true}]}]}]}, {"id": "pandas", "title": "Pandas", "summary": "Tables of data: filter, sort, group and summarise.", "icon": "🐼", "modules": [{"id": "pandas-dataframes", "title": "DataFrames", "lessons": [{"id": "pd-dataframes", "title": "Filter, sort and group", "body": "A DataFrame is a table. `df[df['score'].gt(80)]` keeps rows where score is above 80 (`.gt` means greater than; real pandas also accepts `df['score'] > 80`). `df.sort_values('score', ascending=False)` sorts. `df.groupby('dept')['salary'].mean()` gives one average per group.", "example": "import pandas as pd\ndf = pd.DataFrame({'name': ['A', 'B'], 'score': [70, 90]})\nprint(df[df['score'].gt(80)])", "check": {"prompt": "df.groupby('dept')['salary'].mean() returns…", "options": ["One number", "The average salary for each dept", "The first row of each dept", "A sorted DataFrame"], "answerIndex": 1, "explanation": "groupby splits rows by dept, then mean() gives one average per group."}, "quests": [{"id": "pd-top-students", "title": "Top students", "difficulty": "medium", "topic": "Pandas", "instructions": "Write `top_students(df, n)` that returns a **list** of the names of the `n` students with the highest `score`, highest first.\n\nThe DataFrame has columns `name` and `score`.", "starterCode": "import pandas as pd\n\ndef top_students(df, n):\n    pass\n", "hints": ["Sort by score with ascending=False.", "Take .head(n), then ['name'].tolist()."], "tests": [{"name": "Top 2", "kind": "expr", "expr": "top_students(pd.DataFrame({'name': ['A', 'B', 'C'], 'score': [70, 90, 80]}), 2)", "expected": "['B', 'C']"}, {"name": "Top 1", "kind": "expr", "expr": "top_students(pd.DataFrame({'name': ['X', 'Y'], 'score': [10, 5]}), 1)", "expected": "['X']"}], "lang": "python", "lite": true}, {"id": "pd-dept-average", "title": "Average salary by department", "difficulty": "hard", "topic": "Pandas", "instructions": "Write `avg_by_dept(df)` that returns the average `salary` for each `dept` as a **dictionary**.\n\n`{'HR': 3000.0, 'IT': 5000.0}`", "starterCode": "import pandas as pd\n\ndef avg_by_dept(df):\n    pass\n", "hints": ["Use groupby('dept').", "A Series has .to_dict()."], "tests": [{"name": "Two departments", "kind": "expr", "expr": "avg_by_dept(pd.DataFrame({'dept': ['HR', 'IT', 'IT', 'HR'], 'salary': [2000, 4000, 6000, 4000]}))", "expected": "{'HR': 3000.0, 'IT': 5000.0}"}], "lang": "python", "lite": true}]}]}]}, {"id": "math-stats", "title": "Math + Statistics", "summary": "Mean, median, spread and probability for data work.", "icon": "📐", "modules": [{"id": "stats-basics", "title": "Describing data", "lessons": [{"id": "stats-center", "title": "Mean and median", "body": "The mean is the total divided by the count. The median is the middle value after sorting. If there is an even number of values, the median is the average of the two middle values. The median is less affected by extreme values.", "example": "values = [1, 3, 100]\n# mean = 34.67, median = 3", "check": {"prompt": "Which is better for salaries with a few very rich people?", "options": ["Mean", "Median", "Both are the same", "Neither"], "answerIndex": 1, "explanation": "A few huge salaries pull the mean up. The median stays in the middle."}, "quests": [{"id": "stats-mean-median", "title": "Mean and median by hand", "difficulty": "medium", "topic": "Statistics", "instructions": "Write `mean_median(values)` that returns a tuple `(mean, median)`, both rounded to 2 decimal places.\n\nDo not import `statistics`.", "starterCode": "def mean_median(values):\n    pass\n", "hints": ["Sort a copy with sorted(values).", "For even length, average the two middle items: n // 2 - 1 and n // 2."], "tests": [{"name": "No statistics module", "kind": "forbid", "pattern": "statistics", "message": "Calculate it yourself."}, {"name": "Odd length", "kind": "expr", "expr": "mean_median([3, 1, 100])", "expected": "(34.67, 3)"}, {"name": "Even length", "kind": "expr", "expr": "mean_median([4, 1, 3, 2])", "expected": "(2.5, 2.5)"}], "lang": "python"}]}]}]}, {"id": "dsa-sql", "title": "DSA + SQL", "summary": "Searching, complexity and querying databases.", "icon": "🧩", "modules": [{"id": "dsa-search", "title": "Searching", "lessons": [{"id": "dsa-binary-search", "title": "Binary search", "body": "Binary search finds an item in a **sorted** list. Check the middle. If the target is bigger, search the right half. If smaller, search the left half. Each step removes half the list, so it takes O(log n) steps.", "example": "# 1,000,000 items → about 20 checks", "check": {"prompt": "Binary search needs the list to be…", "options": ["Short", "Sorted", "Unique", "Numbers only"], "answerIndex": 1, "explanation": "It decides left or right by comparing with the middle, which only works when sorted."}, "quests": [{"id": "dsa-binary-search-quest", "title": "Binary search", "difficulty": "hard", "topic": "Searching", "instructions": "Write `binary_search(arr, target)` that returns the index of `target` in the sorted list `arr`, or `-1` if it is not there.\n\nDo not use `.index()` or `in`.", "starterCode": "def binary_search(arr, target):\n    low, high = 0, len(arr) - 1\n    # your loop here\n    return -1\n", "hints": ["while low <= high: mid = (low + high) // 2", "If arr[mid] < target, move low to mid + 1. Otherwise move high."], "tests": [{"name": "No .index()", "kind": "forbid", "pattern": ".index(", "message": "Do not use .index()."}, {"name": "Found in middle", "kind": "expr", "expr": "binary_search([1, 3, 5, 7, 9], 7)", "expected": "3"}, {"name": "First item", "kind": "expr", "expr": "binary_search([2, 4, 6], 2)", "expected": "0"}, {"name": "Not found", "kind": "expr", "expr": "binary_search([2, 4, 6], 5)", "expected": "-1"}, {"name": "Empty list", "kind": "expr", "expr": "binary_search([], 1)", "expected": "-1"}], "lang": "python"}]}, {"id": "sql-select", "title": "SQL SELECT", "body": "SQL reads data from tables. `SELECT columns FROM table WHERE condition ORDER BY column`. `WHERE` filters rows. `ORDER BY ... DESC` sorts from high to low.", "example": "SELECT name FROM students WHERE score > 80 ORDER BY score DESC;", "check": {"prompt": "Which part filters rows?", "options": ["SELECT", "FROM", "WHERE", "ORDER BY"], "answerIndex": 2, "explanation": "WHERE keeps only rows that match the condition."}, "quests": [{"id": "sql-top-scores", "title": "Query the students table", "difficulty": "medium", "topic": "SQL", "instructions": "There is a table `students(name, score)`.\n\nWrite a SQL query that returns the **names** of students with a score **above 80**, highest score first.", "starterCode": "-- Write your query below\n", "hints": ["You only need the name column.", "WHERE score > 80 ORDER BY score DESC"], "setup": [["Ali", 72], ["Mei", 95], ["Raj", 81], ["Sara", 80]], "tests": [{"name": "Only the name column", "kind": "sqlcols", "expected": ["name"]}, {"name": "Correct rows and order", "kind": "sql", "expected": [["Mei"], ["Raj"]]}], "lang": "sql"}]}]}]}, {"id": "machine-learning", "title": "Machine Learning", "summary": "Train/test split, models, and measuring performance.", "icon": "🤖", "modules": [{"id": "ml-evaluation", "title": "Evaluating models", "lessons": [{"id": "ml-train-test", "title": "Train, test and accuracy", "body": "A model learns from training data. We check it on test data it has never seen. This tells us if it works on new data or only memorised the training data (overfitting). Accuracy = correct predictions ÷ all predictions.", "example": "y_true = [1, 0, 1]\ny_pred = [1, 1, 1]\n# accuracy = 2 / 3", "check": {"prompt": "Training accuracy 99%, test accuracy 60%. This is probably…", "options": ["Underfitting", "Overfitting", "A perfect model", "A data type error"], "answerIndex": 1, "explanation": "The model memorised training data but fails on new data: overfitting."}, "quests": [{"id": "ml-accuracy", "title": "Accuracy from scratch", "difficulty": "medium", "topic": "Model evaluation", "instructions": "Write `accuracy(y_true, y_pred)` that returns the share of correct predictions, rounded to 2 decimal places.\n\nIf the lists are empty, return `0.0`.", "starterCode": "def accuracy(y_true, y_pred):\n    pass\n", "hints": ["zip(y_true, y_pred) gives pairs.", "Count pairs where both are equal, then divide by the length."], "tests": [{"name": "2 of 3", "kind": "expr", "expr": "accuracy([1, 0, 1], [1, 1, 1])", "expected": "0.67"}, {"name": "All correct", "kind": "expr", "expr": "accuracy([0, 1], [0, 1])", "expected": "1.0"}, {"name": "Empty", "kind": "expr", "expr": "accuracy([], [])", "expected": "0.0"}], "lang": "python"}]}]}]}, {"id": "deep-learning", "title": "Deep Learning", "summary": "Neurons, activations and how networks learn.", "icon": "🧠", "modules": [{"id": "dl-neurons", "title": "Neurons", "lessons": [{"id": "dl-activation", "title": "Activation functions", "body": "A neuron adds up its inputs, then passes the result through an activation function. ReLU is the most common: negative values become 0, positive values stay the same. Without activations, a network can only learn straight lines.", "example": "relu(-3) = 0\nrelu(5) = 5", "check": {"prompt": "relu(-0.5) = ?", "options": ["-0.5", "0", "0.5", "1"], "answerIndex": 1, "explanation": "ReLU turns every negative value into 0."}, "quests": [{"id": "dl-neuron", "title": "One neuron", "difficulty": "hard", "topic": "Neural networks", "instructions": "Write `neuron(inputs, weights, bias)` that returns `relu(sum(input × weight) + bias)`.\n\n`neuron([1, 2], [0.5, -1], 1)` → `0` because 0.5 − 2 + 1 = −0.5, and ReLU makes it 0.", "starterCode": "def neuron(inputs, weights, bias):\n    pass\n", "hints": ["Multiply matching items: zip(inputs, weights).", "ReLU is max(0, value)."], "tests": [{"name": "Negative → 0", "kind": "expr", "expr": "neuron([1, 2], [0.5, -1], 1)", "expected": "0"}, {"name": "Positive stays", "kind": "expr", "expr": "neuron([2, 3], [1, 1], 0.5)", "expected": "5.5"}], "lang": "python"}]}]}]}, {"id": "genai-llm", "title": "GenAI / LLM", "summary": "Tokens, prompts and how to use LLMs well.", "icon": "✨", "modules": [{"id": "llm-prompting", "title": "Prompting", "lessons": [{"id": "llm-prompts", "title": "Structured prompts", "body": "LLMs work better with clear structure: who the model is, what the task is, and the rules. Put each part on its own line. Clear prompts give more reliable output.", "example": "Role: Python tutor\nTask: Explain loops\nRules: Short answer; One example", "check": {"prompt": "Which prompt is clearer?", "options": ["'help python'", "'Role: tutor. Task: explain lists. Rules: one example.'", "'...'", "They are the same"], "answerIndex": 1, "explanation": "It says who, what and how. The model has less to guess."}, "quests": [{"id": "llm-build-prompt", "title": "Prompt builder", "difficulty": "medium", "topic": "Prompting", "instructions": "Write `build_prompt(role, task, rules)` that returns a string with three lines:\n\n```\nRole: <role>\nTask: <task>\nRules: <rule1>; <rule2>\n```\n\n`rules` is a list. Join the rules with `\"; \"`.", "starterCode": "def build_prompt(role, task, rules):\n    pass\n", "hints": ["\"; \".join(rules) joins a list.", "Use \\n for new lines, or an f-string with three lines."], "tests": [{"name": "Two rules", "kind": "expr", "expr": "build_prompt('tutor', 'explain loops', ['short', 'one example'])", "expected": "'Role: tutor\\nTask: explain loops\\nRules: short; one example'"}, {"name": "One rule", "kind": "expr", "expr": "build_prompt('coach', 'quiz me', ['easy'])", "expected": "'Role: coach\\nTask: quiz me\\nRules: easy'"}], "lang": "python"}]}]}]}, {"id": "ai-agents", "title": "AI Agents", "summary": "Tools, routing and the think → act → observe loop.", "icon": "🛠️", "modules": [{"id": "agents-tools", "title": "Tools", "lessons": [{"id": "agents-routing", "title": "Choosing a tool", "body": "An agent is an LLM that can use tools, like a calculator or search. Each step it decides which tool fits the request, uses it, and reads the result. A simple router uses rules to pick the tool.", "example": "\"What is 12 * 7?\" → calculator\n\"Who is the CEO of Grab?\" → search", "check": {"prompt": "An agent gets 'What is 15% of 80?'. Best tool?", "options": ["search", "calculator", "email", "none"], "answerIndex": 1, "explanation": "It is pure maths, so the calculator is the right tool."}, "quests": [{"id": "agents-router", "title": "Tool router", "difficulty": "hard", "topic": "Agents", "instructions": "Write `choose_tool(query)` that returns:\n\n- `\"calculator\"` if the query contains any digit **and** any of `+ - * /`\n- `\"search\"` if it starts with who, what, when or where (any case)\n- `\"chat\"` otherwise\n\nCheck calculator first.", "starterCode": "def choose_tool(query):\n    pass\n", "hints": ["any(c.isdigit() for c in query)", "query.lower().split()[0] gives the first word. Watch out for empty text."], "tests": [{"name": "Maths", "kind": "expr", "expr": "choose_tool('What is 12 * 7?')", "expected": "'calculator'"}, {"name": "Question", "kind": "expr", "expr": "choose_tool('Who founded Grab?')", "expected": "'search'"}, {"name": "Chat", "kind": "expr", "expr": "choose_tool('tell me a joke')", "expected": "'chat'"}, {"name": "Digits without operator", "kind": "expr", "expr": "choose_tool('when is 2027 exam')", "expected": "'search'"}, {"name": "Empty", "kind": "expr", "expr": "choose_tool('')", "expected": "'chat'"}], "lang": "python"}]}]}]}, {"id": "projects", "title": "Projects", "summary": "Turn skills into portfolio projects with GitHub and demos.", "icon": "🚀", "modules": [{"id": "projects-planning", "title": "Planning a project", "lessons": [{"id": "projects-scope", "title": "Small, finished, shown", "body": "A small finished project is worth more than a big unfinished one. Pick one real problem, one dataset and one clear result. Put the code on GitHub with a README, and add a demo link if you can. Track your projects on the Projects page.", "check": {"prompt": "Which project is the best first choice?", "options": ["A full ChatGPT clone", "A model that predicts student pass/fail from a public dataset, with a README", "An idea list", "A tutorial copied line by line"], "answerIndex": 1, "explanation": "Small scope, real data, finished and documented."}, "quests": []}]}]}], "XP_BY_DIFFICULTY": {"easy": 10, "medium": 20, "hard": 40, "boss": 100}, "ACHIEVEMENTS": [{"id": "first-quest", "title": "First steps", "description": "Pass your first quest.", "icon": "🥾"}, {"id": "bug-hunter", "title": "Bug hunter", "description": "Pass a quest after failing it first.", "icon": "🐛"}, {"id": "boss-slayer", "title": "Boss slayer", "description": "Defeat a boss quest.", "icon": "🐉"}, {"id": "python-complete", "title": "Pythonista", "description": "Pass every Python quest.", "icon": "🐍"}, {"id": "xp-100", "title": "Century", "description": "Earn 100 XP.", "icon": "💯"}, {"id": "xp-500", "title": "Grinder", "description": "Earn 500 XP.", "icon": "⚡"}, {"id": "streak-3", "title": "On a roll", "description": "Study 3 days in a row.", "icon": "🔥"}, {"id": "streak-7", "title": "Week warrior", "description": "Study 7 days in a row.", "icon": "🗓️"}, {"id": "english-starter", "title": "Clear speaker", "description": "Finish an English exercise.", "icon": "🗣️"}, {"id": "planner", "title": "Planner", "description": "Add your first CGPA task.", "icon": "📋"}, {"id": "project-builder", "title": "Builder", "description": "Add your first project.", "icon": "🏗️"}], "READING": [{"id": "read-overfitting", "title": "Why models overfit", "passage": "A machine learning model learns patterns from training data. Sometimes it learns the training data too well. It remembers small details and noise instead of the general pattern. This is called overfitting. An overfitted model gets a very high score on the training data but a much lower score on new data. To find this problem, we keep some data aside as a test set. The model never sees this data during training. If the test score is much lower than the training score, the model is probably overfitting. Simple fixes include using more data, using a simpler model, or stopping training earlier.", "questions": [{"prompt": "What does an overfitted model remember?", "options": ["Only the general pattern", "Small details and noise", "Nothing", "Only the test data"], "answerIndex": 1, "explanation": "The passage says it remembers small details and noise instead of the general pattern."}, {"prompt": "How can we find overfitting?", "options": ["Train for longer", "Compare training score with test score", "Delete the test set", "Use more features"], "answerIndex": 1, "explanation": "A much lower test score than training score is the sign."}, {"prompt": "Which is NOT a fix mentioned in the passage?", "options": ["More data", "A simpler model", "Stopping earlier", "A bigger model"], "answerIndex": 3, "explanation": "The passage suggests a simpler model, not a bigger one."}]}, {"id": "read-llm", "title": "How chatbots write", "passage": "A large language model, or LLM, writes text one small piece at a time. These pieces are called tokens. A token can be a word or part of a word. The model looks at all the tokens so far and predicts which token should come next. It then adds that token and repeats the process. The model learned these predictions by reading a huge amount of text during training. Because it predicts likely text, it can sometimes produce answers that sound correct but are wrong. This is why students should check important facts.", "questions": [{"prompt": "What is a token?", "options": ["A password", "A word or part of a word", "A full sentence", "A type of computer"], "answerIndex": 1, "explanation": "The passage defines a token as a word or part of a word."}, {"prompt": "Why should students check important facts?", "options": ["LLMs are slow", "LLMs can sound correct but be wrong", "LLMs cannot write English", "Tokens are expensive"], "answerIndex": 1, "explanation": "It predicts likely text, which is not always true text."}]}], "LISTENING": [{"id": "listen-variables", "title": "Lecture clip: variables", "transcript": "Today we look at variables. A variable is a name that stores a value, like a labelled box. In Python you create one with the equals sign. The value on the right is calculated first, then stored in the name on the left. You can change the value later, and the old value is replaced.", "keyPoints": [{"point": "A variable is a name that stores a value", "keywords": ["name", "store", "value"]}, {"point": "You create it with the equals sign", "keywords": ["equal", "="]}, {"point": "The right side is calculated first", "keywords": ["right", "first"]}, {"point": "The value can change or be replaced", "keywords": ["change", "replace"]}], "modelSummary": "A variable is a name that stores a value. You create it with =. Python calculates the right side first and stores it in the name on the left. You can change it later, and the new value replaces the old one."}, {"id": "listen-train-test", "title": "Lecture clip: train and test data", "transcript": "When we build a model, we split the data into two parts. The training set is used to teach the model. The test set is kept aside and only used at the end. It shows how well the model works on data it has never seen before. If we test on training data, the score will look better than it really is.", "keyPoints": [{"point": "Data is split into two parts", "keywords": ["split", "two"]}, {"point": "Training data teaches the model", "keywords": ["train", "teach", "learn"]}, {"point": "Test data is new, unseen data used at the end", "keywords": ["unseen", "never seen", "new", "end"]}, {"point": "Testing on training data gives a misleading score", "keywords": ["better", "misleading", "higher", "fake"]}], "modelSummary": "We split data into a training set and a test set. The model learns from the training set. The test set is unseen data we use at the end to check real performance, because testing on training data makes the score look better than it is."}], "SPEAKING": [{"id": "speak-variable", "prompt": "Explain what a Python variable is to a friend who has never coded. Use 2–3 sentences.", "keywords": ["name", "value", "store"], "modelAnswer": "A variable is like a labelled box that stores a value. You give it a name, such as score, and put a value in it with the equals sign. Later, you can use the name to get the value or change it."}, {"id": "speak-overfitting", "prompt": "Explain overfitting in your own words. Use 2–3 sentences.", "keywords": ["training", "test", "new data", "memor"], "modelAnswer": "Overfitting happens when a model memorises the training data instead of learning the general pattern. It scores very well on training data but badly on new data. We notice it when the test score is much lower than the training score."}, {"id": "speak-project", "prompt": "Describe one AI project you want to build and why. Use 3 sentences.", "keywords": ["project", "data", "because"], "modelAnswer": "I want to build a model that predicts whether a student will pass a subject. It will use past marks and attendance data. I chose it because it solves a real problem for students and teachers."}], "VOCABULARY": [{"word": "algorithm", "meaning": "a set of steps to solve a problem", "example": "Binary search is a fast algorithm."}, {"word": "dataset", "meaning": "a collection of data used for analysis or training", "example": "We used a public dataset of house prices."}, {"word": "accuracy", "meaning": "how often predictions are correct", "example": "The model's accuracy was 92%."}, {"word": "overfitting", "meaning": "when a model memorises training data and fails on new data", "example": "Overfitting made the test score drop."}, {"word": "iterate", "meaning": "to repeat a process, often to improve it", "example": "We iterate over each row in the table."}, {"word": "parameter", "meaning": "a value a function or model uses or learns", "example": "The function takes two parameters."}, {"word": "evaluate", "meaning": "to judge or measure how good something is", "example": "Evaluate the model on the test set."}, {"word": "hypothesis", "meaning": "an idea you test with evidence", "example": "My hypothesis is that sleep affects grades."}]};
+window.__LITE__ = {"src/lib/numpy.py": "\"\"\"NumPy Lite: a small pure-Python subset of NumPy (1-D arrays) for the in-browser sandbox.\"\"\"\nimport math as _math\n\n_sum, _min, _max, _abs, _round = sum, min, max, abs, round\n\nMASK_HELP = (\"The truth value of an array is ambiguous. Browser Python can't build a mask from a > 1. \"\n             \"Write np.greater(a, 1) or a.gt(1) instead (also: ge, lt, le, eq, ne). Use a.any() or a.all() for if-tests.\")\n\nnan = float(\"nan\")\npi = _math.pi\ne = _math.e\n\n\ndef _unwrap(x):\n    if isinstance(x, ndarray):\n        return x._d\n    return x\n\n\nclass ndarray:\n    def __init__(self, data):\n        if isinstance(data, ndarray):\n            data = data._d\n        out = []\n        for v in data:\n            if isinstance(v, (list, tuple, ndarray)):\n                raise NotImplementedError(\"NumPy Lite supports 1-D arrays only\")\n            out.append(v)\n        self._d = out\n\n    # ---- shape info\n    def _shape(self):\n        return (len(self._d),)\n    shape = property(_shape)\n\n    def _size(self):\n        return len(self._d)\n    size = property(_size)\n\n    def _ndim(self):\n        return 1\n    ndim = property(_ndim)\n\n    def _T(self):\n        return self\n    T = property(_T)\n\n    # ---- element-wise helpers\n    def _op(self, other, f):\n        if isinstance(other, (list, tuple)):\n            other = ndarray(other)\n        if isinstance(other, ndarray):\n            if len(other._d) != len(self._d):\n                raise ValueError(\"operands could not be broadcast together with shapes (%d,) (%d,)\" % (len(self._d), len(other._d)))\n            return ndarray([f(a, b) for a, b in zip(self._d, other._d)])\n        return ndarray([f(a, other) for a in self._d])\n\n    def __add__(self, o): return self._op(o, lambda a, b: a + b)\n    def __radd__(self, o): return self._op(o, lambda a, b: b + a)\n    def __sub__(self, o): return self._op(o, lambda a, b: a - b)\n    def __rsub__(self, o): return self._op(o, lambda a, b: b - a)\n    def __mul__(self, o): return self._op(o, lambda a, b: a * b)\n    def __rmul__(self, o): return self._op(o, lambda a, b: b * a)\n    def __truediv__(self, o): return self._op(o, lambda a, b: a / b)\n    def __rtruediv__(self, o): return self._op(o, lambda a, b: b / a)\n    def __floordiv__(self, o): return self._op(o, lambda a, b: a // b)\n    def __mod__(self, o): return self._op(o, lambda a, b: a % b)\n    def __pow__(self, o): return self._op(o, lambda a, b: a ** b)\n    def __neg__(self): return ndarray([-a for a in self._d])\n    def __abs__(self): return ndarray([_abs(a) for a in self._d])\n    def __gt__(self, o): return self._op(o, lambda a, b: a > b)\n    def __ge__(self, o): return self._op(o, lambda a, b: a >= b)\n    def __lt__(self, o): return self._op(o, lambda a, b: a < b)\n    def __le__(self, o): return self._op(o, lambda a, b: a <= b)\n    def __eq__(self, o): return self._op(o, lambda a, b: a == b)\n    def __ne__(self, o): return self._op(o, lambda a, b: a != b)\n    def __and__(self, o): return self._op(o, lambda a, b: bool(a) and bool(b))\n    def __or__(self, o): return self._op(o, lambda a, b: bool(a) or bool(b))\n\n    def __bool__(self):\n        if len(self._d) == 1:\n            return bool(self._d[0])\n        raise ValueError(MASK_HELP)\n\n    def gt(self, o): return self.__gt__(o)\n    def ge(self, o): return self.__ge__(o)\n    def lt(self, o): return self.__lt__(o)\n    def le(self, o): return self.__le__(o)\n    def eq(self, o): return self.__eq__(o)\n    def ne(self, o): return self.__ne__(o)\n\n    # ---- container protocol\n    def __len__(self): return len(self._d)\n    def __iter__(self): return iter(list(self._d))\n    def __contains__(self, x): return x in self._d\n\n    def __getitem__(self, key):\n        if isinstance(key, ndarray) or isinstance(key, list):\n            key = _unwrap(key)\n            if len(key) and isinstance(key[0], bool):\n                if len(key) != len(self._d):\n                    raise IndexError(\"boolean index did not match the array length\")\n                return ndarray([v for v, k in zip(self._d, key) if k])\n            return ndarray([self._d[i] for i in key])\n        if isinstance(key, slice):\n            return ndarray(self._d[key])\n        return self._d[key]\n\n    def __setitem__(self, key, value):\n        self._d[key] = value\n\n    # ---- methods\n    def tolist(self): return list(self._d)\n    def copy(self): return ndarray(list(self._d))\n    def sum(self): return _sum(self._d)\n    def min(self):\n        if not self._d: raise ValueError(\"zero-size array to reduction operation minimum which has no identity\")\n        return _min(self._d)\n    def max(self):\n        if not self._d: raise ValueError(\"zero-size array to reduction operation maximum which has no identity\")\n        return _max(self._d)\n    def mean(self):\n        return _sum(self._d) / len(self._d) if self._d else nan\n    def std(self):\n        m = self.mean()\n        return _math.sqrt(_sum((x - m) ** 2 for x in self._d) / len(self._d))\n    def var(self):\n        m = self.mean()\n        return _sum((x - m) ** 2 for x in self._d) / len(self._d)\n    def argmax(self): return self._d.index(_max(self._d))\n    def argmin(self): return self._d.index(_min(self._d))\n    def any(self): return any(self._d)\n    def all(self): return all(self._d)\n    def cumsum(self):\n        out, t = [], 0\n        for v in self._d:\n            t += v\n            out.append(t)\n        return ndarray(out)\n    def astype(self, t): return ndarray([t(v) for v in self._d])\n    def round(self, n=0): return ndarray([_round(v, n) for v in self._d])\n    def sort(self): self._d.sort()\n    def reshape(self, *a): raise NotImplementedError(\"NumPy Lite supports 1-D arrays only\")\n    def dot(self, o): return dot(self, o)\n\n    def __repr__(self):\n        return \"array(\" + repr(self._d) + \")\"\n\n    def __str__(self):\n        return \"[\" + \" \".join(str(v) for v in self._d) + \"]\"\n\n\ndef array(data, dtype=None):\n    a = ndarray(data)\n    return a.astype(dtype) if dtype else a\n\ndef asarray(data): return array(data)\ndef zeros(n): return ndarray([0.0] * n)\ndef ones(n): return ndarray([1.0] * n)\ndef full(n, v): return ndarray([v] * n)\n\ndef arange(start, stop=None, step=1):\n    if stop is None:\n        start, stop = 0, start\n    out, v = [], start\n    while (step > 0 and v < stop) or (step < 0 and v > stop):\n        out.append(v)\n        v += step\n    return ndarray(out)\n\ndef linspace(start, stop, num=50):\n    if num == 1: return ndarray([float(start)])\n    step = (stop - start) / (num - 1)\n    return ndarray([start + i * step for i in range(num)])\n\ndef _ew(x, f):\n    if isinstance(x, (ndarray, list, tuple)):\n        return ndarray([f(v) for v in _unwrap(x)])\n    return f(x)\n\ndef sqrt(x): return _ew(x, _math.sqrt)\ndef exp(x): return _ew(x, _math.exp)\ndef log(x): return _ew(x, _math.log)\ndef absolute(x): return _ew(x, _abs)\nabs = absolute\ndef round(x, n=0):\n    return _ew(x, lambda v: _round(v, n))\ndef maximum(a, b): return array(a)._op(b, lambda x, y: x if x >= y else y)\ndef minimum(a, b): return array(a)._op(b, lambda x, y: x if x <= y else y)\ndef where(cond, a, b):\n    c = _unwrap(cond)\n    av = _unwrap(a) if isinstance(a, (ndarray, list)) else [a] * len(c)\n    bv = _unwrap(b) if isinstance(b, (ndarray, list)) else [b] * len(c)\n    return ndarray([x if k else y for k, x, y in zip(c, av, bv)])\n\ndef sum(x):\n    return _sum(_unwrap(x))\ndef mean(x): return array(x).mean()\ndef median(x):\n    s = sorted(_unwrap(x))\n    n = len(s)\n    return s[n // 2] if n % 2 else (s[n // 2 - 1] + s[n // 2]) / 2\ndef std(x): return array(x).std()\ndef var(x): return array(x).var()\ndef min(x): return array(x).min()\ndef max(x): return array(x).max()\ndef argmax(x): return array(x).argmax()\ndef argmin(x): return array(x).argmin()\ndef sort(x): return ndarray(sorted(_unwrap(x)))\ndef unique(x): return ndarray(sorted(set(_unwrap(x))))\ndef cumsum(x): return array(x).cumsum()\ndef dot(a, b):\n    a, b = _unwrap(array(a)), _unwrap(array(b))\n    if len(a) != len(b): raise ValueError(\"shapes (%d,) and (%d,) not aligned\" % (len(a), len(b)))\n    return _sum(x * y for x, y in zip(a, b))\ndef isnan(x): return _ew(x, lambda v: v != v)\n\ndef greater(a, b): return array(a).gt(b)\ndef greater_equal(a, b): return array(a).ge(b)\ndef less(a, b): return array(a).lt(b)\ndef less_equal(a, b): return array(a).le(b)\ndef equal(a, b): return array(a).eq(b)\ndef not_equal(a, b): return array(a).ne(b)\n", "src/lib/numpy/__init__.py": "\"\"\"NumPy Lite: a small pure-Python subset of NumPy (1-D arrays) for the in-browser sandbox.\"\"\"\nimport math as _math\n\n_sum, _min, _max, _abs, _round = sum, min, max, abs, round\n\nMASK_HELP = (\"The truth value of an array is ambiguous. Browser Python can't build a mask from a > 1. \"\n             \"Write np.greater(a, 1) or a.gt(1) instead (also: ge, lt, le, eq, ne). Use a.any() or a.all() for if-tests.\")\n\nnan = float(\"nan\")\npi = _math.pi\ne = _math.e\n\n\ndef _unwrap(x):\n    if isinstance(x, ndarray):\n        return x._d\n    return x\n\n\nclass ndarray:\n    def __init__(self, data):\n        if isinstance(data, ndarray):\n            data = data._d\n        out = []\n        for v in data:\n            if isinstance(v, (list, tuple, ndarray)):\n                raise NotImplementedError(\"NumPy Lite supports 1-D arrays only\")\n            out.append(v)\n        self._d = out\n\n    # ---- shape info\n    def _shape(self):\n        return (len(self._d),)\n    shape = property(_shape)\n\n    def _size(self):\n        return len(self._d)\n    size = property(_size)\n\n    def _ndim(self):\n        return 1\n    ndim = property(_ndim)\n\n    def _T(self):\n        return self\n    T = property(_T)\n\n    # ---- element-wise helpers\n    def _op(self, other, f):\n        if isinstance(other, (list, tuple)):\n            other = ndarray(other)\n        if isinstance(other, ndarray):\n            if len(other._d) != len(self._d):\n                raise ValueError(\"operands could not be broadcast together with shapes (%d,) (%d,)\" % (len(self._d), len(other._d)))\n            return ndarray([f(a, b) for a, b in zip(self._d, other._d)])\n        return ndarray([f(a, other) for a in self._d])\n\n    def __add__(self, o): return self._op(o, lambda a, b: a + b)\n    def __radd__(self, o): return self._op(o, lambda a, b: b + a)\n    def __sub__(self, o): return self._op(o, lambda a, b: a - b)\n    def __rsub__(self, o): return self._op(o, lambda a, b: b - a)\n    def __mul__(self, o): return self._op(o, lambda a, b: a * b)\n    def __rmul__(self, o): return self._op(o, lambda a, b: b * a)\n    def __truediv__(self, o): return self._op(o, lambda a, b: a / b)\n    def __rtruediv__(self, o): return self._op(o, lambda a, b: b / a)\n    def __floordiv__(self, o): return self._op(o, lambda a, b: a // b)\n    def __mod__(self, o): return self._op(o, lambda a, b: a % b)\n    def __pow__(self, o): return self._op(o, lambda a, b: a ** b)\n    def __neg__(self): return ndarray([-a for a in self._d])\n    def __abs__(self): return ndarray([_abs(a) for a in self._d])\n    def __gt__(self, o): return self._op(o, lambda a, b: a > b)\n    def __ge__(self, o): return self._op(o, lambda a, b: a >= b)\n    def __lt__(self, o): return self._op(o, lambda a, b: a < b)\n    def __le__(self, o): return self._op(o, lambda a, b: a <= b)\n    def __eq__(self, o): return self._op(o, lambda a, b: a == b)\n    def __ne__(self, o): return self._op(o, lambda a, b: a != b)\n    def __and__(self, o): return self._op(o, lambda a, b: bool(a) and bool(b))\n    def __or__(self, o): return self._op(o, lambda a, b: bool(a) or bool(b))\n\n    def __bool__(self):\n        if len(self._d) == 1:\n            return bool(self._d[0])\n        raise ValueError(MASK_HELP)\n\n    def gt(self, o): return self.__gt__(o)\n    def ge(self, o): return self.__ge__(o)\n    def lt(self, o): return self.__lt__(o)\n    def le(self, o): return self.__le__(o)\n    def eq(self, o): return self.__eq__(o)\n    def ne(self, o): return self.__ne__(o)\n\n    # ---- container protocol\n    def __len__(self): return len(self._d)\n    def __iter__(self): return iter(list(self._d))\n    def __contains__(self, x): return x in self._d\n\n    def __getitem__(self, key):\n        if isinstance(key, ndarray) or isinstance(key, list):\n            key = _unwrap(key)\n            if len(key) and isinstance(key[0], bool):\n                if len(key) != len(self._d):\n                    raise IndexError(\"boolean index did not match the array length\")\n                return ndarray([v for v, k in zip(self._d, key) if k])\n            return ndarray([self._d[i] for i in key])\n        if isinstance(key, slice):\n            return ndarray(self._d[key])\n        return self._d[key]\n\n    def __setitem__(self, key, value):\n        self._d[key] = value\n\n    # ---- methods\n    def tolist(self): return list(self._d)\n    def copy(self): return ndarray(list(self._d))\n    def sum(self): return _sum(self._d)\n    def min(self):\n        if not self._d: raise ValueError(\"zero-size array to reduction operation minimum which has no identity\")\n        return _min(self._d)\n    def max(self):\n        if not self._d: raise ValueError(\"zero-size array to reduction operation maximum which has no identity\")\n        return _max(self._d)\n    def mean(self):\n        return _sum(self._d) / len(self._d) if self._d else nan\n    def std(self):\n        m = self.mean()\n        return _math.sqrt(_sum((x - m) ** 2 for x in self._d) / len(self._d))\n    def var(self):\n        m = self.mean()\n        return _sum((x - m) ** 2 for x in self._d) / len(self._d)\n    def argmax(self): return self._d.index(_max(self._d))\n    def argmin(self): return self._d.index(_min(self._d))\n    def any(self): return any(self._d)\n    def all(self): return all(self._d)\n    def cumsum(self):\n        out, t = [], 0\n        for v in self._d:\n            t += v\n            out.append(t)\n        return ndarray(out)\n    def astype(self, t): return ndarray([t(v) for v in self._d])\n    def round(self, n=0): return ndarray([_round(v, n) for v in self._d])\n    def sort(self): self._d.sort()\n    def reshape(self, *a): raise NotImplementedError(\"NumPy Lite supports 1-D arrays only\")\n    def dot(self, o): return dot(self, o)\n\n    def __repr__(self):\n        return \"array(\" + repr(self._d) + \")\"\n\n    def __str__(self):\n        return \"[\" + \" \".join(str(v) for v in self._d) + \"]\"\n\n\ndef array(data, dtype=None):\n    a = ndarray(data)\n    return a.astype(dtype) if dtype else a\n\ndef asarray(data): return array(data)\ndef zeros(n): return ndarray([0.0] * n)\ndef ones(n): return ndarray([1.0] * n)\ndef full(n, v): return ndarray([v] * n)\n\ndef arange(start, stop=None, step=1):\n    if stop is None:\n        start, stop = 0, start\n    out, v = [], start\n    while (step > 0 and v < stop) or (step < 0 and v > stop):\n        out.append(v)\n        v += step\n    return ndarray(out)\n\ndef linspace(start, stop, num=50):\n    if num == 1: return ndarray([float(start)])\n    step = (stop - start) / (num - 1)\n    return ndarray([start + i * step for i in range(num)])\n\ndef _ew(x, f):\n    if isinstance(x, (ndarray, list, tuple)):\n        return ndarray([f(v) for v in _unwrap(x)])\n    return f(x)\n\ndef sqrt(x): return _ew(x, _math.sqrt)\ndef exp(x): return _ew(x, _math.exp)\ndef log(x): return _ew(x, _math.log)\ndef absolute(x): return _ew(x, _abs)\nabs = absolute\ndef round(x, n=0):\n    return _ew(x, lambda v: _round(v, n))\ndef maximum(a, b): return array(a)._op(b, lambda x, y: x if x >= y else y)\ndef minimum(a, b): return array(a)._op(b, lambda x, y: x if x <= y else y)\ndef where(cond, a, b):\n    c = _unwrap(cond)\n    av = _unwrap(a) if isinstance(a, (ndarray, list)) else [a] * len(c)\n    bv = _unwrap(b) if isinstance(b, (ndarray, list)) else [b] * len(c)\n    return ndarray([x if k else y for k, x, y in zip(c, av, bv)])\n\ndef sum(x):\n    return _sum(_unwrap(x))\ndef mean(x): return array(x).mean()\ndef median(x):\n    s = sorted(_unwrap(x))\n    n = len(s)\n    return s[n // 2] if n % 2 else (s[n // 2 - 1] + s[n // 2]) / 2\ndef std(x): return array(x).std()\ndef var(x): return array(x).var()\ndef min(x): return array(x).min()\ndef max(x): return array(x).max()\ndef argmax(x): return array(x).argmax()\ndef argmin(x): return array(x).argmin()\ndef sort(x): return ndarray(sorted(_unwrap(x)))\ndef unique(x): return ndarray(sorted(set(_unwrap(x))))\ndef cumsum(x): return array(x).cumsum()\ndef dot(a, b):\n    a, b = _unwrap(array(a)), _unwrap(array(b))\n    if len(a) != len(b): raise ValueError(\"shapes (%d,) and (%d,) not aligned\" % (len(a), len(b)))\n    return _sum(x * y for x, y in zip(a, b))\ndef isnan(x): return _ew(x, lambda v: v != v)\n\ndef greater(a, b): return array(a).gt(b)\ndef greater_equal(a, b): return array(a).ge(b)\ndef less(a, b): return array(a).lt(b)\ndef less_equal(a, b): return array(a).le(b)\ndef equal(a, b): return array(a).eq(b)\ndef not_equal(a, b): return array(a).ne(b)\n", "src/lib/pandas.py": "\"\"\"Pandas Lite: a small pure-Python subset of pandas (Series, DataFrame, groupby) for the in-browser sandbox.\"\"\"\nimport numpy as _np\n\n_sum, _min, _max, _len, _round = sum, min, max, len, round\n\n\ndef _vals(x):\n    if isinstance(x, Series):\n        return x._d\n    if isinstance(x, _np.ndarray):\n        return x.tolist()\n    return x\n\n\nclass Series:\n    def __init__(self, data=None, index=None, name=None):\n        if isinstance(data, dict):\n            index = list(data.keys())\n            data = list(data.values())\n        self._d = list(_vals(data) if data is not None else [])\n        self.index = list(index) if index is not None else list(range(_len(self._d)))\n        self.name = name\n\n    def _values(self):\n        return _np.array(self._d)\n    values = property(_values)\n\n    def _op(self, other, f):\n        if isinstance(other, Series):\n            return Series([f(a, b) for a, b in zip(self._d, other._d)], self.index, self.name)\n        return Series([f(a, other) for a in self._d], self.index, self.name)\n\n    def __add__(self, o): return self._op(o, lambda a, b: a + b)\n    def __sub__(self, o): return self._op(o, lambda a, b: a - b)\n    def __mul__(self, o): return self._op(o, lambda a, b: a * b)\n    def __truediv__(self, o): return self._op(o, lambda a, b: a / b)\n    def __gt__(self, o): return self._op(o, lambda a, b: a > b)\n    def __ge__(self, o): return self._op(o, lambda a, b: a >= b)\n    def __lt__(self, o): return self._op(o, lambda a, b: a < b)\n    def __le__(self, o): return self._op(o, lambda a, b: a <= b)\n    def __eq__(self, o): return self._op(o, lambda a, b: a == b)\n    def __ne__(self, o): return self._op(o, lambda a, b: a != b)\n    def __and__(self, o): return self._op(o, lambda a, b: bool(a) and bool(b))\n    def __or__(self, o): return self._op(o, lambda a, b: bool(a) or bool(b))\n\n    def __len__(self): return _len(self._d)\n    def __iter__(self): return iter(list(self._d))\n\n    def __bool__(self):\n        raise ValueError(\"The truth value of a Series is ambiguous. Browser Python can't build a filter from s > 80. \"\n                         \"Write s.gt(80) instead (also: ge, lt, le, eq, ne), e.g. df[df['score'].gt(80)].\")\n\n    def gt(self, o): return self.__gt__(o)\n    def ge(self, o): return self.__ge__(o)\n    def lt(self, o): return self.__lt__(o)\n    def le(self, o): return self.__le__(o)\n    def eq(self, o): return self.__eq__(o)\n    def ne(self, o): return self.__ne__(o)\n\n    def __getitem__(self, key):\n        if isinstance(key, Series) and _len(key._d) and isinstance(key._d[0], bool):\n            pairs = [(i, v) for i, v, k in zip(self.index, self._d, key._d) if k]\n            return Series([v for _, v in pairs], [i for i, _ in pairs], self.name)\n        if key in self.index:\n            return self._d[self.index.index(key)]\n        raise KeyError(key)\n\n    def keys(self): return list(self.index)\n    def items(self): return list(zip(self.index, self._d))\n    def tolist(self): return list(self._d)\n    def to_list(self): return list(self._d)\n    def to_dict(self): return dict(zip(self.index, self._d))\n    def sum(self): return _sum(self._d)\n    def mean(self): return _sum(self._d) / _len(self._d) if self._d else float(\"nan\")\n    def min(self): return _min(self._d)\n    def max(self): return _max(self._d)\n    def count(self): return _len(self._d)\n    def median(self): return _np.median(self._d)\n    def std(self):\n        m = self.mean()\n        n = _len(self._d)\n        return (_sum((x - m) ** 2 for x in self._d) / (n - 1)) ** 0.5 if n > 1 else float(\"nan\")\n    def unique(self): return list(dict.fromkeys(self._d))\n    def nunique(self): return _len(set(self._d))\n    def value_counts(self):\n        c = {}\n        for v in self._d:\n            c[v] = c.get(v, 0) + 1\n        pairs = sorted(c.items(), key=lambda p: -p[1])\n        return Series([p[1] for p in pairs], [p[0] for p in pairs], self.name)\n    def head(self, n=5): return Series(self._d[:n], self.index[:n], self.name)\n    def tail(self, n=5): return Series(self._d[-n:] if n else [], self.index[-n:] if n else [], self.name)\n    def sort_values(self, ascending=True):\n        pairs = sorted(zip(self.index, self._d), key=lambda p: p[1], reverse=not ascending)\n        return Series([p[1] for p in pairs], [p[0] for p in pairs], self.name)\n    def apply(self, f): return Series([f(v) for v in self._d], self.index, self.name)\n    def map(self, f):\n        if isinstance(f, dict):\n            return Series([f.get(v) for v in self._d], self.index, self.name)\n        return self.apply(f)\n    def round(self, n=0): return Series([_round(v, n) for v in self._d], self.index, self.name)\n    def isin(self, values): return Series([v in values for v in self._d], self.index, self.name)\n    def reset_index(self, drop=False):\n        return Series(self._d, None, self.name)\n\n    def __repr__(self):\n        lines = [\"%s    %s\" % (i, v) for i, v in zip(self.index, self._d)]\n        if self.name is not None:\n            lines.append(\"Name: %s\" % self.name)\n        return \"\\n\".join(lines) if lines else \"Series([])\"\n    __str__ = __repr__\n\n\nclass DataFrame:\n    def __init__(self, data=None, index=None):\n        data = data or {}\n        if isinstance(data, list):\n            cols = []\n            for row in data:\n                for k in row:\n                    if k not in cols:\n                        cols.append(k)\n            data = {c: [row.get(c) for row in data] for c in cols}\n        self._c = {}\n        n = None\n        for k, v in data.items():\n            v = list(_vals(v))\n            if n is not None and _len(v) != n:\n                raise ValueError(\"All arrays must be of the same length\")\n            n = _len(v)\n            self._c[k] = v\n        self.index = list(index) if index is not None else list(range(n or 0))\n\n    def _columns(self): return list(self._c.keys())\n    columns = property(_columns)\n\n    def _shape(self): return (_len(self.index), _len(self._c))\n    shape = property(_shape)\n\n    def __len__(self): return _len(self.index)\n\n    def _rows(self, positions):\n        return DataFrame({k: [v[p] for p in positions] for k, v in self._c.items()}, [self.index[p] for p in positions])\n\n    def __getitem__(self, key):\n        if isinstance(key, str):\n            if key not in self._c:\n                raise KeyError(key)\n            return Series(self._c[key], self.index, key)\n        if isinstance(key, list):\n            for k in key:\n                if k not in self._c:\n                    raise KeyError(k)\n            return DataFrame({k: self._c[k] for k in key}, self.index)\n        if isinstance(key, Series):\n            return self._rows([p for p, k in enumerate(key._d) if k])\n        raise KeyError(key)\n\n    def __setitem__(self, key, value):\n        v = _vals(value)\n        if not isinstance(v, list):\n            v = [v] * _len(self.index)\n        self._c[key] = list(v)\n\n    def head(self, n=5): return self._rows(list(range(_min(n, _len(self.index)))))\n    def tail(self, n=5): return self._rows(list(range(_max(0, _len(self.index) - n), _len(self.index))))\n\n    def sort_values(self, by, ascending=True):\n        keys = by if isinstance(by, list) else [by]\n        order = list(range(_len(self.index)))\n        for k in reversed(keys):\n            col = self._c[k]\n            order = sorted(order, key=lambda p: col[p], reverse=not ascending)\n        return self._rows(order)\n\n    def groupby(self, by): return GroupBy(self, by)\n\n    def mean(self, numeric_only=True):\n        out = {}\n        for k, v in self._c.items():\n            if v and all(isinstance(x, (int, float)) and not isinstance(x, bool) for x in v):\n                out[k] = _sum(v) / _len(v)\n        return Series(list(out.values()), list(out.keys()))\n\n    def drop(self, columns=None):\n        cols = columns if isinstance(columns, list) else [columns]\n        return DataFrame({k: v for k, v in self._c.items() if k not in cols}, self.index)\n\n    def dropna(self):\n        keep = [p for p in range(_len(self.index)) if all(v[p] is not None and v[p] == v[p] for v in self._c.values())]\n        return self._rows(keep)\n\n    def reset_index(self, drop=False):\n        return DataFrame(dict(self._c))\n\n    def iterrows(self):\n        for p, i in enumerate(self.index):\n            yield i, Series([v[p] for v in self._c.values()], list(self._c.keys()))\n\n    def to_dict(self, orient=\"dict\"):\n        if orient == \"records\":\n            return [{k: v[p] for k, v in self._c.items()} for p in range(_len(self.index))]\n        return {k: dict(zip(self.index, v)) for k, v in self._c.items()}\n\n    def __repr__(self):\n        cols = list(self._c.keys())\n        rows = [\"    \" + \"  \".join(str(c) for c in cols)]\n        for p, i in enumerate(self.index):\n            rows.append(str(i) + \"   \" + \"  \".join(str(self._c[c][p]) for c in cols))\n        return \"\\n\".join(rows)\n    __str__ = __repr__\n\n\nclass GroupBy:\n    def __init__(self, df, by):\n        self.df = df\n        self.by = by\n        self.col = None\n\n    def __getitem__(self, col):\n        g = GroupBy(self.df, self.by)\n        g.col = col\n        return g\n\n    def _groups(self):\n        keys = self.df._c[self.by]\n        groups = {}\n        for p, k in enumerate(keys):\n            groups.setdefault(k, []).append(p)\n        return sorted(groups.items(), key=lambda kv: kv[0])\n\n    def _agg(self, f):\n        if self.col is None:\n            cols = [c for c in self.df._c if c != self.by]\n            data = {c: [f([self.df._c[c][p] for p in ps]) for _, ps in self._groups()] for c in cols}\n            return DataFrame(data, [k for k, _ in self._groups()])\n        vals = self.df._c[self.col]\n        gs = self._groups()\n        return Series([f([vals[p] for p in ps]) for _, ps in gs], [k for k, _ in gs], self.col)\n\n    def mean(self): return self._agg(lambda v: _sum(v) / _len(v))\n    def sum(self): return self._agg(lambda v: _sum(v))\n    def count(self): return self._agg(lambda v: _len(v))\n    def size(self): return self._agg(lambda v: _len(v))\n    def max(self): return self._agg(lambda v: _max(v))\n    def min(self): return self._agg(lambda v: _min(v))\n\n\ndef concat(frames):\n    cols = frames[0].columns\n    return DataFrame({c: [x for f in frames for x in f._c[c]] for c in cols})\n", "src/lib/pandas/__init__.py": "\"\"\"Pandas Lite: a small pure-Python subset of pandas (Series, DataFrame, groupby) for the in-browser sandbox.\"\"\"\nimport numpy as _np\n\n_sum, _min, _max, _len, _round = sum, min, max, len, round\n\n\ndef _vals(x):\n    if isinstance(x, Series):\n        return x._d\n    if isinstance(x, _np.ndarray):\n        return x.tolist()\n    return x\n\n\nclass Series:\n    def __init__(self, data=None, index=None, name=None):\n        if isinstance(data, dict):\n            index = list(data.keys())\n            data = list(data.values())\n        self._d = list(_vals(data) if data is not None else [])\n        self.index = list(index) if index is not None else list(range(_len(self._d)))\n        self.name = name\n\n    def _values(self):\n        return _np.array(self._d)\n    values = property(_values)\n\n    def _op(self, other, f):\n        if isinstance(other, Series):\n            return Series([f(a, b) for a, b in zip(self._d, other._d)], self.index, self.name)\n        return Series([f(a, other) for a in self._d], self.index, self.name)\n\n    def __add__(self, o): return self._op(o, lambda a, b: a + b)\n    def __sub__(self, o): return self._op(o, lambda a, b: a - b)\n    def __mul__(self, o): return self._op(o, lambda a, b: a * b)\n    def __truediv__(self, o): return self._op(o, lambda a, b: a / b)\n    def __gt__(self, o): return self._op(o, lambda a, b: a > b)\n    def __ge__(self, o): return self._op(o, lambda a, b: a >= b)\n    def __lt__(self, o): return self._op(o, lambda a, b: a < b)\n    def __le__(self, o): return self._op(o, lambda a, b: a <= b)\n    def __eq__(self, o): return self._op(o, lambda a, b: a == b)\n    def __ne__(self, o): return self._op(o, lambda a, b: a != b)\n    def __and__(self, o): return self._op(o, lambda a, b: bool(a) and bool(b))\n    def __or__(self, o): return self._op(o, lambda a, b: bool(a) or bool(b))\n\n    def __len__(self): return _len(self._d)\n    def __iter__(self): return iter(list(self._d))\n\n    def __bool__(self):\n        raise ValueError(\"The truth value of a Series is ambiguous. Browser Python can't build a filter from s > 80. \"\n                         \"Write s.gt(80) instead (also: ge, lt, le, eq, ne), e.g. df[df['score'].gt(80)].\")\n\n    def gt(self, o): return self.__gt__(o)\n    def ge(self, o): return self.__ge__(o)\n    def lt(self, o): return self.__lt__(o)\n    def le(self, o): return self.__le__(o)\n    def eq(self, o): return self.__eq__(o)\n    def ne(self, o): return self.__ne__(o)\n\n    def __getitem__(self, key):\n        if isinstance(key, Series) and _len(key._d) and isinstance(key._d[0], bool):\n            pairs = [(i, v) for i, v, k in zip(self.index, self._d, key._d) if k]\n            return Series([v for _, v in pairs], [i for i, _ in pairs], self.name)\n        if key in self.index:\n            return self._d[self.index.index(key)]\n        raise KeyError(key)\n\n    def keys(self): return list(self.index)\n    def items(self): return list(zip(self.index, self._d))\n    def tolist(self): return list(self._d)\n    def to_list(self): return list(self._d)\n    def to_dict(self): return dict(zip(self.index, self._d))\n    def sum(self): return _sum(self._d)\n    def mean(self): return _sum(self._d) / _len(self._d) if self._d else float(\"nan\")\n    def min(self): return _min(self._d)\n    def max(self): return _max(self._d)\n    def count(self): return _len(self._d)\n    def median(self): return _np.median(self._d)\n    def std(self):\n        m = self.mean()\n        n = _len(self._d)\n        return (_sum((x - m) ** 2 for x in self._d) / (n - 1)) ** 0.5 if n > 1 else float(\"nan\")\n    def unique(self): return list(dict.fromkeys(self._d))\n    def nunique(self): return _len(set(self._d))\n    def value_counts(self):\n        c = {}\n        for v in self._d:\n            c[v] = c.get(v, 0) + 1\n        pairs = sorted(c.items(), key=lambda p: -p[1])\n        return Series([p[1] for p in pairs], [p[0] for p in pairs], self.name)\n    def head(self, n=5): return Series(self._d[:n], self.index[:n], self.name)\n    def tail(self, n=5): return Series(self._d[-n:] if n else [], self.index[-n:] if n else [], self.name)\n    def sort_values(self, ascending=True):\n        pairs = sorted(zip(self.index, self._d), key=lambda p: p[1], reverse=not ascending)\n        return Series([p[1] for p in pairs], [p[0] for p in pairs], self.name)\n    def apply(self, f): return Series([f(v) for v in self._d], self.index, self.name)\n    def map(self, f):\n        if isinstance(f, dict):\n            return Series([f.get(v) for v in self._d], self.index, self.name)\n        return self.apply(f)\n    def round(self, n=0): return Series([_round(v, n) for v in self._d], self.index, self.name)\n    def isin(self, values): return Series([v in values for v in self._d], self.index, self.name)\n    def reset_index(self, drop=False):\n        return Series(self._d, None, self.name)\n\n    def __repr__(self):\n        lines = [\"%s    %s\" % (i, v) for i, v in zip(self.index, self._d)]\n        if self.name is not None:\n            lines.append(\"Name: %s\" % self.name)\n        return \"\\n\".join(lines) if lines else \"Series([])\"\n    __str__ = __repr__\n\n\nclass DataFrame:\n    def __init__(self, data=None, index=None):\n        data = data or {}\n        if isinstance(data, list):\n            cols = []\n            for row in data:\n                for k in row:\n                    if k not in cols:\n                        cols.append(k)\n            data = {c: [row.get(c) for row in data] for c in cols}\n        self._c = {}\n        n = None\n        for k, v in data.items():\n            v = list(_vals(v))\n            if n is not None and _len(v) != n:\n                raise ValueError(\"All arrays must be of the same length\")\n            n = _len(v)\n            self._c[k] = v\n        self.index = list(index) if index is not None else list(range(n or 0))\n\n    def _columns(self): return list(self._c.keys())\n    columns = property(_columns)\n\n    def _shape(self): return (_len(self.index), _len(self._c))\n    shape = property(_shape)\n\n    def __len__(self): return _len(self.index)\n\n    def _rows(self, positions):\n        return DataFrame({k: [v[p] for p in positions] for k, v in self._c.items()}, [self.index[p] for p in positions])\n\n    def __getitem__(self, key):\n        if isinstance(key, str):\n            if key not in self._c:\n                raise KeyError(key)\n            return Series(self._c[key], self.index, key)\n        if isinstance(key, list):\n            for k in key:\n                if k not in self._c:\n                    raise KeyError(k)\n            return DataFrame({k: self._c[k] for k in key}, self.index)\n        if isinstance(key, Series):\n            return self._rows([p for p, k in enumerate(key._d) if k])\n        raise KeyError(key)\n\n    def __setitem__(self, key, value):\n        v = _vals(value)\n        if not isinstance(v, list):\n            v = [v] * _len(self.index)\n        self._c[key] = list(v)\n\n    def head(self, n=5): return self._rows(list(range(_min(n, _len(self.index)))))\n    def tail(self, n=5): return self._rows(list(range(_max(0, _len(self.index) - n), _len(self.index))))\n\n    def sort_values(self, by, ascending=True):\n        keys = by if isinstance(by, list) else [by]\n        order = list(range(_len(self.index)))\n        for k in reversed(keys):\n            col = self._c[k]\n            order = sorted(order, key=lambda p: col[p], reverse=not ascending)\n        return self._rows(order)\n\n    def groupby(self, by): return GroupBy(self, by)\n\n    def mean(self, numeric_only=True):\n        out = {}\n        for k, v in self._c.items():\n            if v and all(isinstance(x, (int, float)) and not isinstance(x, bool) for x in v):\n                out[k] = _sum(v) / _len(v)\n        return Series(list(out.values()), list(out.keys()))\n\n    def drop(self, columns=None):\n        cols = columns if isinstance(columns, list) else [columns]\n        return DataFrame({k: v for k, v in self._c.items() if k not in cols}, self.index)\n\n    def dropna(self):\n        keep = [p for p in range(_len(self.index)) if all(v[p] is not None and v[p] == v[p] for v in self._c.values())]\n        return self._rows(keep)\n\n    def reset_index(self, drop=False):\n        return DataFrame(dict(self._c))\n\n    def iterrows(self):\n        for p, i in enumerate(self.index):\n            yield i, Series([v[p] for v in self._c.values()], list(self._c.keys()))\n\n    def to_dict(self, orient=\"dict\"):\n        if orient == \"records\":\n            return [{k: v[p] for k, v in self._c.items()} for p in range(_len(self.index))]\n        return {k: dict(zip(self.index, v)) for k, v in self._c.items()}\n\n    def __repr__(self):\n        cols = list(self._c.keys())\n        rows = [\"    \" + \"  \".join(str(c) for c in cols)]\n        for p, i in enumerate(self.index):\n            rows.append(str(i) + \"   \" + \"  \".join(str(self._c[c][p]) for c in cols))\n        return \"\\n\".join(rows)\n    __str__ = __repr__\n\n\nclass GroupBy:\n    def __init__(self, df, by):\n        self.df = df\n        self.by = by\n        self.col = None\n\n    def __getitem__(self, col):\n        g = GroupBy(self.df, self.by)\n        g.col = col\n        return g\n\n    def _groups(self):\n        keys = self.df._c[self.by]\n        groups = {}\n        for p, k in enumerate(keys):\n            groups.setdefault(k, []).append(p)\n        return sorted(groups.items(), key=lambda kv: kv[0])\n\n    def _agg(self, f):\n        if self.col is None:\n            cols = [c for c in self.df._c if c != self.by]\n            data = {c: [f([self.df._c[c][p] for p in ps]) for _, ps in self._groups()] for c in cols}\n            return DataFrame(data, [k for k, _ in self._groups()])\n        vals = self.df._c[self.col]\n        gs = self._groups()\n        return Series([f([vals[p] for p in ps]) for _, ps in gs], [k for k, _ in gs], self.col)\n\n    def mean(self): return self._agg(lambda v: _sum(v) / _len(v))\n    def sum(self): return self._agg(lambda v: _sum(v))\n    def count(self): return self._agg(lambda v: _len(v))\n    def size(self): return self._agg(lambda v: _len(v))\n    def max(self): return self._agg(lambda v: _max(v))\n    def min(self): return self._agg(lambda v: _min(v))\n\n\ndef concat(frames):\n    cols = frames[0].columns\n    return DataFrame({c: [x for f in frames for x in f._c[c]] for c in cols})\n"};</script>
+<script>
+// ---- AI Quest grading engine: Python via Skulpt, SQL via AlaSQL. Runs in the viewer's browser. ----
+const Engine = (() => {
+  const LITE_MODULES = window.__LITE__ || {};
+  const TIME_LIMIT_MS = 5000;
+  const norm = (t) => String(t).replace(/\r/g, "").trim().split("\n").map((l) => l.replace(/\s+$/, "")).join("\n");
+
+  function errorText(err, userLines) {
+    if ((err && /TimeLimitError|TimeoutError/.test(err.tp$name || "")) || /time limit/i.test(String(err)))
+      return "Your code ran for more than 5 seconds and was stopped. Check for an infinite loop (a while loop that never ends).";
+    let name = (err && err.tp$name) || "Error";
+    let msg = "";
+    try {
+      msg = err.args && err.args.v && err.args.v.length ? Sk.ffi.remapToJs(err.args.v[0]) : "";
+    } catch (e) {
+      msg = "";
+    }
+    if (!msg) msg = String(err).replace(/^\w+:\s*/, "").replace(/ on line \d+$/, "");
+    if (typeof msg !== "string") msg = String(msg);
+    if (name === "NotImplementedError" || /not yet implemented|not supported yet/i.test(msg))
+      msg += ". Browser Python doesn't support this yet, so try a simpler way to write it";
+    if (name === "ImportError" && /No module named/.test(msg))
+      msg += ". The browser version has math, random, string, re, collections, numpy (lite) and pandas (lite)";
+    let line = null;
+    if (err && err.traceback && err.traceback.length) {
+      for (const f of err.traceback) if (f.lineno && f.lineno <= userLines) { line = f.lineno; break; }
+      if (line === null) return `${name}: ${msg} (while running the test)`;
+    }
+    return line ? `${name}: ${msg} (line ${line})` : `${name}: ${msg}`;
+  }
+
+  async function runPython(code, { stdin = "", echo = false } = {}) {
+    const queue = stdin.replace(/\r/g, "").split("\n");
+    if (queue.length && queue[queue.length - 1] === "") queue.pop();
+    let out = "";
+    Sk.configure({
+      output: (t) => { if (out.length < 5000) out += t; },
+      read: (f) => {
+        const lite = LITE_MODULES[f];
+        if (lite) return lite;
+        if (Sk.builtinFiles === undefined || Sk.builtinFiles.files[f] === undefined) throw new Error(`File not found: '${f}'`);
+        return Sk.builtinFiles.files[f];
+      },
+      inputfun: (prompt) => {
+        if (echo && prompt) out += prompt;
+        if (!queue.length) throw new Sk.builtin.EOFError("input() was called but there is no more input");
+        const v = queue.shift();
+        if (echo) out += v + "\n";
+        return v;
+      },
+      inputfunTakesPrompt: true,
+      __future__: Sk.python3,
+      execLimit: TIME_LIMIT_MS,
+      yieldLimit: 100,
+      killableWhile: true,
+      killableFor: true,
+    });
+    Sk.execStart = Date.now();
+    try {
+      const mod = await Sk.misceval.asyncToPromise(() => Sk.importMainWithBody("<your code>", false, code, true));
+      return { module: mod, stdout: out, error: null };
+    } catch (err) {
+      return { module: null, stdout: out, error: err };
+    }
+  }
+
+  const get = (mod, name) => {
+    const v = mod.$d[name];
+    return v === undefined ? undefined : Sk.ffi.remapToJs(v);
+  };
+
+  async function run(quest, code, stdin) {
+    if (quest.lang === "sql") {
+      try {
+        const rows = runSql(quest, code);
+        return { stdout: rows.length ? rows.map((r) => JSON.stringify(r)).join("\n") : "(no rows)", error: null };
+      } catch (e) {
+        return { stdout: "", error: "SQL error: " + (e.message || e) };
+      }
+    }
+    const lines = code.split("\n").length;
+    const r = await runPython(code, { stdin, echo: true });
+    return { stdout: r.stdout, error: r.error ? errorText(r.error, lines) : null };
+  }
+
+  function runSql(quest, query) {
+    const q = query.replace(/--.*$/gm, "").trim().replace(/;\s*$/, "");
+    if (!q) throw new Error("the query is empty");
+    if (!/^\s*select\b/i.test(q)) throw new Error("only SELECT queries are allowed here");
+    const db = new alasql.Database();
+    db.exec("CREATE TABLE students (name STRING, score INT)");
+    for (const [n, s] of quest.setup) db.exec("INSERT INTO students VALUES (?, ?)", [n, s]);
+    const res = db.exec(q);
+    return res.map((row) => Object.values(row));
+  }
+
+  async function test(quest, code) {
+    const results = [];
+    const userLines = code.split("\n").length;
+    for (const t of quest.tests) {
+      const r = { name: t.name, passed: false, expected: null, got: null, error: null, call: null };
+      if (t.kind === "forbid") {
+        r.passed = !code.includes(t.pattern);
+        if (!r.passed) r.error = t.message;
+      } else if (t.kind === "sql" || t.kind === "sqlcols") {
+        try {
+          const q = code.replace(/--.*$/gm, "").trim().replace(/;\s*$/, "");
+          if (t.kind === "sqlcols") {
+            const db = new alasql.Database();
+            db.exec("CREATE TABLE students (name STRING, score INT)");
+            db.exec("INSERT INTO students VALUES ('X', 90)");
+            if (!/^\s*select\b/i.test(q)) throw new Error("only SELECT queries are allowed here");
+            const rows = db.exec(q);
+            const cols = rows.length ? Object.keys(rows[0]) : [];
+            r.expected = JSON.stringify(t.expected);
+            r.got = JSON.stringify(cols);
+            r.passed = JSON.stringify(cols.map((c) => c.toLowerCase())) === JSON.stringify(t.expected);
+          } else {
+            const rows = runSql(quest, code);
+            r.expected = JSON.stringify(t.expected);
+            r.got = JSON.stringify(rows);
+            r.passed = r.got === r.expected;
+          }
+        } catch (e) {
+          r.error = "SQL error: " + (e.message || e);
+        }
+      } else if (t.kind === "output") {
+        const x = await runPython(code, { stdin: t.stdin || "" });
+        r.expected = t.expected;
+        r.got = x.stdout;
+        if (x.error) r.error = errorText(x.error, userLines);
+        else r.passed = norm(x.stdout) === norm(t.expected);
+      } else if (t.kind === "expr") {
+        r.expected = t.expected;
+        r.call = t.expr;
+        const check = t.expected === "None" ? "__aq_v is None" : `__aq_v == (${t.expected})`;
+        const program = `${code}\n__aq_v = (${t.expr})\n__aq_r = repr(__aq_v)\n__aq_ok = bool(${check})\n`;
+        const x = await runPython(program, {});
+        if (x.error) r.error = errorText(x.error, userLines);
+        else {
+          r.got = get(x.module, "__aq_r");
+          r.passed = get(x.module, "__aq_ok") === true;
+        }
+      }
+      results.push(r);
+    }
+    return results;
+  }
+
+  return { run, test };
+})();
+
+</script>
+<script>
+"use strict";
+/* ============================ content ============================ */
+const C = window.__CONTENT__;
+const XP = C.XP_BY_DIFFICULTY;
+const COURSES = C.COURSES.map((c, i) => ({ ...c, position: i + 1 }));
+const QUESTS = [];
+const LESSONS = [];
+for (const c of COURSES) {
+  let pos = 0;
+  for (const m of c.modules)
+    for (const l of m.lessons) {
+      LESSONS.push({ ...l, courseId: c.id, moduleId: m.id });
+      for (const q of l.quests) QUESTS.push({ ...q, courseId: c.id, lessonId: l.id, position: ++pos });
+    }
+}
+const QMAP = Object.fromEntries(QUESTS.map((q) => [q.id, q]));
+const CMAP = Object.fromEntries(COURSES.map((c) => [c.id, c]));
+const DIFF = {
+  easy: { label: "Easy", icon: "🌱" },
+  medium: { label: "Medium", icon: "⚔️" },
+  hard: { label: "Hard", icon: "🔥" },
+  boss: { label: "Boss", icon: "🐉" },
+};
+
+/* ============================ helpers ============================ */
+const $ = (sel, root = document) => root.querySelector(sel);
+const esc = (s) =>
+  String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+const inl = (t) => esc(t).replace(/`([^`]+)`/g, "<code>$1</code>").replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
+function md(src) {
+  const lines = String(src ?? "").replace(/\r/g, "").split("\n");
+  let html = "";
+  let i = 0;
+  while (i < lines.length) {
+    const l = lines[i];
+    if (l.startsWith("```")) {
+      const buf = [];
+      i++;
+      while (i < lines.length && !lines[i].startsWith("```")) buf.push(lines[i++]);
+      i++;
+      html += `<pre><code>${esc(buf.join("\n"))}</code></pre>`;
+      continue;
+    }
+    if (/^\s*[-*]\s+/.test(l)) {
+      const items = [];
+      while (i < lines.length && /^\s*[-*]\s+/.test(lines[i])) items.push(lines[i++].replace(/^\s*[-*]\s+/, ""));
+      html += `<ul>${items.map((t) => `<li>${inl(t)}</li>`).join("")}</ul>`;
+      continue;
+    }
+    if (/^\s*\d+[.)]\s+/.test(l)) {
+      const items = [];
+      while (i < lines.length && /^\s*\d+[.)]\s+/.test(lines[i])) items.push(lines[i++].replace(/^\s*\d+[.)]\s+/, ""));
+      html += `<ol>${items.map((t) => `<li>${inl(t)}</li>`).join("")}</ol>`;
+      continue;
+    }
+    const h = l.match(/^#{1,4}\s+(.*)/);
+    if (h) {
+      html += `<h4>${inl(h[1])}</h4>`;
+      i++;
+      continue;
+    }
+    if (!l.trim()) {
+      i++;
+      continue;
+    }
+    const para = [];
+    while (i < lines.length && lines[i].trim() && !/^(```|\s*[-*]\s+|\s*\d+[.)]\s+|#{1,4}\s)/.test(lines[i])) para.push(lines[i++]);
+    html += `<p>${para.map(inl).join("<br>")}</p>`;
+  }
+  return `<div class="md">${html}</div>`;
+}
+const today = (d = new Date()) => d.toLocaleDateString("en-CA");
+const levelOf = (xp) => Math.floor(xp / 100) + 1;
+const lp = (xp) => ({ level: levelOf(xp), current: xp % 100, needed: 100 });
+const uid = () => Math.random().toString(36).slice(2, 10) + Date.now().toString(36).slice(-4);
+const diffBadge = (d) => `<span class="badge d-${d}"><span aria-hidden="true">${DIFF[d].icon}</span>${DIFF[d].label}</span>`;
+const pbar = (pct, label, green) =>
+  `<div class="pbar${green ? " green" : ""}" role="progressbar" aria-label="${esc(label)}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${Math.round(pct)}"><div style="width:${Math.max(0, Math.min(100, pct))}%"></div></div>`;
+const xpbar = (cur, need, size = "") =>
+  `<div class="xpbar ${size}" role="progressbar" aria-label="XP to next level" aria-valuemin="0" aria-valuemax="${need}" aria-valuenow="${cur}"><div style="width:${Math.max((cur / need) * 100, 3)}%"></div></div>`;
+
+/* ============================ platform ============================ */
+const P = { db: null, user: null, sample: null, uid: null, mode: "local", name: "", lbUnsub: null, leaderboard: null, canWrite: true };
+async function use(name) {
+  try {
+    return window.claude && typeof window.claude.use === "function" ? await window.claude.use(name) : null;
+  } catch {
+    return null;
+  }
+}
+
+/* ============================ state ============================ */
+const LOCAL_KEY = "aq-state-v1";
+const blank = () => ({ v: 1, xp: 0, days: [], progress: {}, mistakes: [], achievements: {}, subjects: [], tasks: [], projects: [] });
+let S = blank();
+function localGet(key) {
+  try {
+    return localStorage.getItem(key);
+  } catch {
+    return null;
+  }
+}
+function localSet(key, val) {
+  try {
+    localStorage.setItem(key, val);
+  } catch {}
+}
+function normalize(raw) {
+  const s = { ...blank(), ...(raw || {}) };
+  for (const k of ["days", "mistakes", "subjects", "tasks", "projects"]) if (!Array.isArray(s[k])) s[k] = [];
+  for (const k of ["progress", "achievements"]) if (!s[k] || typeof s[k] !== "object") s[k] = {};
+  s.xp = Number(s.xp) || 0;
+  return s;
+}
+let saveTimer = null;
+let saving = false;
+let saveAgain = false;
+function save() {
+  localSet(LOCAL_KEY, JSON.stringify(S));
+  if (P.mode !== "account") return;
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(flush, 900);
+}
+async function flush() {
+  if (saving) {
+    saveAgain = true;
+    return;
+  }
+  saving = true;
+  try {
+    await P.db.doc(`data/users/${P.uid}/state`).set(JSON.parse(JSON.stringify(S)));
+  } catch (e) {
+    if (e && e.code === "invalid_argument") {
+      P.mode = "local";
+      P.canWrite = false;
+      toast("Your progress saves in this browser only (this share link is view-only).");
+      renderChrome();
+    }
+  } finally {
+    saving = false;
+    if (saveAgain) {
+      saveAgain = false;
+      flush();
+    }
+  }
+  syncLeaderboard();
+}
+let lastLb = "";
+function syncLeaderboard() {
+  if (!P.db || !P.uid || !P.canWrite) return;
+  const row = { xp: S.xp, level: levelOf(S.xp), streak: streak() };
+  const key = JSON.stringify(row);
+  if (key === lastLb) return;
+  lastLb = key;
+  P.db.doc(`leaderboard/${P.uid}`).set({ ...row, at: Date.now() }).catch(() => {});
+}
+
+async function initPlatform() {
+  const [user, db, sample] = await Promise.all([use("user"), use("db"), use("sample")]);
+  P.user = user;
+  P.db = db;
+  P.sample = sample;
+  if (user) {
+    try {
+      P.uid = await user.id();
+      P.name = (await user.name()) || "";
+      if ((await user.can("data.write")) === false) P.canWrite = false;
+    } catch {}
+  }
+  if (db && P.uid && !P.canWrite) {
+    try {
+      P.lbUnsub = db.collection("leaderboard").orderBy("xp", "desc").limit(50).onSnapshot((qs) => {
+        P.leaderboard = qs.docs.map((d) => ({ id: d.id, ...d.data() }));
+        if (route().name === "leaderboard") render();
+      }, () => {});
+    } catch {}
+  }
+  if (db && P.uid && P.canWrite) {
+    try {
+      const snap = await db.doc(`data/users/${P.uid}/state`).get();
+      if (snap.exists) {
+        S = normalize(snap.data());
+        localSet(LOCAL_KEY, JSON.stringify(S));
+      }
+      P.mode = "account";
+      if (!snap.exists && (S.xp || Object.keys(S.progress).length)) save();
+    } catch {
+      P.mode = "local";
+    }
+    try {
+      P.lbUnsub = db
+        .collection("leaderboard")
+        .orderBy("xp", "desc")
+        .limit(50)
+        .onSnapshot(
+          (qs) => {
+            P.leaderboard = qs.docs.map((d) => ({ id: d.id, ...d.data() }));
+            if (route().name === "leaderboard") render();
+          },
+          () => {},
+        );
+    } catch {}
+    syncLeaderboard();
+  }
+  renderChrome();
+  if (["dashboard", "profile", "leaderboard", "courses", "course", "cgpa", "projects", "english"].includes(route().name)) render();
+}
+
+/* ============================ game ============================ */
+function touch() {
+  const d = today();
+  if (!S.days.includes(d)) {
+    S.days.push(d);
+    if (S.days.length > 400) S.days = S.days.slice(-400);
+  }
+}
+function streak() {
+  const set = new Set(S.days);
+  let d = new Date();
+  if (!set.has(today(d))) d = new Date(d.getTime() - 864e5);
+  let n = 0;
+  while (set.has(today(d))) {
+    n++;
+    d = new Date(d.getTime() - 864e5);
+  }
+  return n;
+}
+const passed = (id) => S.progress[id]?.status === "passed";
+function bump(id, kind, field) {
+  const p = (S.progress[id] ||= { kind, status: "started", attempts: 0, hints: 0 });
+  p[field] = (p[field] || 0) + 1;
+  return p[field];
+}
+function complete(id, kind, xp) {
+  touch();
+  const p = (S.progress[id] ||= { kind, status: "started", attempts: 0, hints: 0 });
+  if (p.status === "passed") {
+    save();
+    return 0;
+  }
+  p.status = "passed";
+  p.attempts = (p.attempts || 0) + 1;
+  p.at = Date.now();
+  S.xp += xp;
+  checkAchievements();
+  save();
+  renderChrome();
+  return xp;
+}
+function mistake(topic, source, itemId, detail) {
+  S.mistakes.push({ id: uid(), topic, source, itemId: itemId || null, detail: String(detail).slice(0, 300), resolved: false, at: Date.now() });
+  if (S.mistakes.length > 300) S.mistakes = S.mistakes.slice(-300);
+}
+function weakTopics(limit = 5) {
+  const m = new Map();
+  for (const x of S.mistakes) if (!x.resolved) m.set(x.topic, (m.get(x.topic) || 0) + 1);
+  return [...m.entries()].map(([topic, count]) => ({ topic, count })).sort((a, b) => b.count - a.count).slice(0, limit);
+}
+function mastery() {
+  return COURSES.map((c) => {
+    const qs = QUESTS.filter((q) => q.courseId === c.id);
+    const done = qs.filter((q) => passed(q.id)).length;
+    return { ...c, total: qs.length, done, mastery: qs.length ? Math.round((done / qs.length) * 100) : 0 };
+  });
+}
+const currentQuest = () => QUESTS.find((q) => !passed(q.id)) || null;
+function unlocked(q) {
+  const prev = QUESTS.filter((x) => x.courseId === q.courseId && x.position < q.position).pop();
+  return !prev || passed(prev.id);
+}
+function nextQuest(q) {
+  const same = QUESTS.find((x) => x.courseId === q.courseId && x.position > q.position);
+  if (same) return same;
+  return QUESTS.find((x) => CMAP[x.courseId].position > CMAP[q.courseId].position) || null;
+}
+function checkAchievements() {
+  const pq = QUESTS.filter((q) => passed(q.id));
+  const rules = {
+    "first-quest": pq.length >= 1,
+    "bug-hunter": pq.some((q) => (S.progress[q.id].attempts || 0) >= 2),
+    "boss-slayer": pq.some((q) => q.difficulty === "boss"),
+    "python-complete": QUESTS.filter((q) => q.courseId === "python").every((q) => passed(q.id)),
+    "xp-100": S.xp >= 100,
+    "xp-500": S.xp >= 500,
+    "streak-3": streak() >= 3,
+    "streak-7": streak() >= 7,
+    "english-starter": Object.values(S.progress).some((p) => p.kind === "english" && p.status === "passed"),
+    planner: S.tasks.length >= 1,
+    "project-builder": S.projects.length >= 1,
+  };
+  for (const a of C.ACHIEVEMENTS)
+    if (rules[a.id] && !S.achievements[a.id]) {
+      S.achievements[a.id] = Date.now();
+      toast(`${a.icon} Badge earned: ${a.title}`);
+    }
+}
+
+/* ============================ toasts ============================ */
+function toast(text) {
+  const box = $("#toasts");
+  if (!box) return;
+  const t = document.createElement("div");
+  t.className = "toast";
+  t.setAttribute("role", "status");
+  t.textContent = text;
+  box.appendChild(t);
+  setTimeout(() => t.remove(), 3800);
+}
+
+/* ============================ router ============================ */
+function route() {
+  const parts = location.hash.replace(/^#\/?/, "").split("/").filter(Boolean);
+  return { name: parts[0] || "home", id: parts[1] ? decodeURIComponent(parts[1]) : null };
+}
+const NAV = [
+  ["dashboard", "Dashboard", "🏠"],
+  ["courses", "Courses", "🗺️"],
+  ["english", "English", "🗣️"],
+  ["cgpa", "CGPA", "🎓"],
+  ["projects", "Projects", "🚀"],
+  ["leaderboard", "Leaderboard", "🏆"],
+  ["profile", "Profile", "👤"],
+];
+const VIEWS = {};
+let navOpen = false;
+
+function renderChrome() {
+  const r = route();
+  const app = $("#app");
+  if (r.name === "home") return;
+  const l = lp(S.xp);
+  const st = streak();
+  const active = (n) => n === r.name || (n === "courses" && (r.name === "course" || r.name === "quest"));
+  const status = $("#status");
+  if (status)
+    status.innerHTML = `<div class="row between"><span class="bold" style="font-family:var(--font-display);font-size:1.1rem">Level ${l.level}</span><span class="small muted">${l.current}/${l.needed} XP</span></div>
+      <div style="margin-top:.4rem">${xpbar(l.current, l.needed, "sm")}</div>
+      <p class="small muted" style="margin-top:.4rem"><span aria-hidden="true">🔥</span> ${st}-day streak</p>`;
+  const mini = $("#mini");
+  if (mini) mini.textContent = `Lv ${l.level}  🔥 ${st}`;
+  const nav = $("#nav");
+  if (nav) for (const a of nav.querySelectorAll("a")) a.toggleAttribute("aria-current", false), active(a.dataset.r) && a.setAttribute("aria-current", "page");
+  const foot = $("#savenote");
+  if (foot)
+    foot.textContent =
+      P.mode === "account" ? "Progress saves to your claude.ai account." : "Progress saves in this browser.";
+  void app;
+}
+
+function shellHtml() {
+  return `
+  <div class="topbar">
+    <a class="logo" href="#/dashboard">AI Quest</a>
+    <div class="row"><span id="mini" class="small bold"></span>
+      <button class="btn btn-secondary" style="padding:.35rem .8rem" data-act="menu" aria-expanded="false" aria-controls="side">Menu</button></div>
+  </div>
+  <div class="shell">
+    <nav id="side" class="side" aria-label="Main">
+      <a class="logo" href="#/dashboard">AI Quest</a>
+      <div id="status" class="status"></div>
+      <ul id="nav" class="nav">
+        ${NAV.map(([r, label, icon]) => `<li><a href="#/${r}" data-r="${r}"><span aria-hidden="true">${icon}</span>${label}</a></li>`).join("")}
+      </ul>
+      <div class="side-foot">
+        <p class="bold" id="who"></p>
+        <p class="muted" id="savenote"></p>
+        <a href="#/" class="muted">About AI Quest</a>
+      </div>
+    </nav>
+    <main id="main" tabindex="-1"></main>
+  </div>
+  <button class="tutor-fab" data-act="tutor-toggle" aria-expanded="false" aria-controls="tutor"><span aria-hidden="true">🧑‍🏫</span> AI Tutor</button>
+  <div id="tutor-root"></div>`;
+}
+
+let shellMounted = false;
+function render() {
+  const r = route();
+  const app = $("#app");
+  if (r.name === "home") {
+    shellMounted = false;
+    app.innerHTML = VIEWS.home();
+    return;
+  }
+  if (!shellMounted) {
+    app.innerHTML = shellHtml();
+    shellMounted = true;
+    renderTutor();
+  }
+  const who = $("#who");
+  if (who) who.textContent = P.name || "";
+  const view = VIEWS[r.name] || VIEWS.notfound;
+  const main = $("#main");
+  main.innerHTML = view(r.id);
+  renderChrome();
+  if (VIEWS[r.name + "_mount"]) VIEWS[r.name + "_mount"](r.id);
+}
+let lastRoute = "";
+window.addEventListener("hashchange", () => {
+  const key = location.hash;
+  if (key === lastRoute) return;
+  lastRoute = key;
+  navOpen = false;
+  const side = $("#side");
+  if (side) side.classList.remove("open");
+  tutor.ctx = null;
+  render();
+  window.scrollTo(0, 0);
+  const main = $("#main");
+  if (main) main.focus({ preventScroll: true });
+});
+
+/* ============================ events ============================ */
+const ACT = {};
+const FORM = {};
+const CHANGE = {};
+document.addEventListener("click", (e) => {
+  const el = e.target.closest("[data-act]");
+  if (el && ACT[el.dataset.act]) ACT[el.dataset.act](el, e);
+});
+document.addEventListener("submit", (e) => {
+  const f = e.target.closest("form[data-form]");
+  if (f && FORM[f.dataset.form]) {
+    e.preventDefault();
+    FORM[f.dataset.form](f, new FormData(f));
+  }
+});
+document.addEventListener("change", (e) => {
+  const el = e.target.closest("[data-change]");
+  if (el && CHANGE[el.dataset.change]) CHANGE[el.dataset.change](el);
+});
+ACT.menu = (el) => {
+  navOpen = !navOpen;
+  $("#side").classList.toggle("open", navOpen);
+  el.setAttribute("aria-expanded", String(navOpen));
+};
+
+/* ============================ views: landing ============================ */
+function trail(stops, { linked = false, wide = false } = {}) {
+  return `<ol class="trail${wide ? " wide" : ""}">${stops
+    .map((s, i) => {
+      const state = s.mastery === 100 ? "done" : s.mastery > 0 ? "active" : "";
+      const tag = linked ? "a" : "div";
+      const href = linked ? ` href="#/course/${s.id}"` : "";
+      const sub = s.total === undefined ? "" : `<span class="small muted">${s.total ? `${s.done}/${s.total} quests` : "Guide + tracker"}</span>`;
+      return `<li><${tag} class="stop ${state}"${href}><span class="stop-icon" aria-hidden="true">${s.icon}<span class="stop-num">${i + 1}</span></span><span><span class="stop-title">${esc(s.title)}</span>${sub}</span></${tag}></li>`;
+    })
+    .join("")}</ol>`;
+}
+VIEWS.home = () => {
+  const started = S.xp > 0 || Object.keys(S.progress).length > 0;
+  return `<div class="landing">
+    <div class="row between"><span class="logo">AI Quest</span><a class="btn btn-primary" href="#/dashboard">${started ? "Open dashboard" : "Start"}</a></div>
+    <section class="hero">
+      <div>
+        <h1>From your first variable to your first AI agent.</h1>
+        <p class="muted" style="margin-top:1.2rem;font-size:1.15rem;max-width:52ch">Short lessons, real coding quests with tests, English practice that makes you rewrite, and exam prep built from your own lecture notes.</p>
+        <div class="row" style="margin-top:2rem;gap:.75rem">
+          <a class="btn btn-primary btn-lg" href="${started ? "#/dashboard" : "#/quest/py-intro"}">${started ? "Continue your quest" : "Start quest 1"}</a>
+          <a class="btn btn-secondary btn-lg" href="#/courses">See the path</a>
+        </div>
+      </div>
+      <div class="hero-card">
+        <div class="row between" style="margin-bottom:1rem"><p class="bold" style="font-family:var(--font-display);font-size:1.1rem">Your path</p><p class="small muted">10 stops</p></div>
+        ${trail(mastery())}
+      </div>
+    </section>
+    <section class="grid g-3" style="margin-top:4rem">
+      ${[
+        ["You try first", "Every quest runs your Python against real tests right in the page. Hints come one small step at a time."],
+        ["Mistakes become targets", "Failed tests are saved as weak topics. The dashboard and the AI tutor use them to pick what you review next."],
+        ["Built for Year 2", "Track subjects and deadlines, turn lecture notes into exam questions, and log portfolio projects with GitHub links."],
+      ]
+        .map(([t, d]) => `<div class="card"><h2>${t}</h2><p class="muted" style="margin-top:.5rem">${d}</p></div>`)
+        .join("")}
+    </section>
+    <section class="band">
+      <h2 style="font-size:1.8rem">Learn, practise, get feedback, retry, master</h2>
+      <p style="margin-top:.6rem;max-width:60ch">Easy quests give 10 XP, medium 20, hard 40, and bosses 100. Every 100 XP is a new level.</p>
+    </section>
+  </div>`;
+};
+VIEWS.notfound = () =>
+  `<div class="empty"><p style="font-size:2.5rem" aria-hidden="true">🗺️</p><h1 style="font-size:1.8rem">This page is not on the map</h1><p class="muted" style="margin-top:.5rem">The link may be old or mistyped.</p><a class="btn btn-primary" style="margin-top:1rem" href="#/dashboard">Back to dashboard</a></div>`;
+
+/* ============================ views: dashboard ============================ */
+function accessBanner() {
+  if (P.canWrite) return "";
+  return `<div class="note warn" role="status"><p class="bold">You have view-only access to this page.</p><p style="margin-top:.2rem">Your progress saves in this browser only and won't appear on the leaderboard. Ask the page owner for Contributor access, or use Export progress on your Profile to keep a backup.</p></div>`;
+}
+VIEWS.dashboard = () => {
+  const l = lp(S.xp);
+  const q = currentQuest();
+  const weak = weakTopics(4);
+  const ms = mastery();
+  const done = ms.reduce((n, c) => n + c.done, 0);
+  const earned = C.ACHIEVEMENTS.filter((a) => S.achievements[a.id]).sort((a, b) => S.achievements[b.id] - S.achievements[a.id]);
+  const first = (P.name || "").split(" ")[0];
+  return `<div class="stack">
+    ${accessBanner()}
+    <h1>${first ? `Hi ${esc(first)}, ready for the next quest?` : "Ready for the next quest?"}</h1>
+    <div class="grid g-main">
+      <section class="card strong">
+        ${
+          q
+            ? `<div class="row muted"><span>Current quest in ${esc(CMAP[q.courseId].title)}</span>${diffBadge(q.difficulty)}</div>
+               <h2 style="font-size:2rem;margin-top:.5rem">${esc(q.title)}</h2>
+               <p class="muted" style="margin-top:.25rem">Topic: ${esc(q.topic)}</p>
+               <div class="row" style="margin-top:1.2rem;gap:.8rem"><a class="btn btn-primary" href="#/quest/${q.id}">Start quest</a><span class="bold">+${XP[q.difficulty]} XP</span></div>`
+            : `<div class="empty"><p class="bold">Every quest is done. 🎉</p><p class="muted">Go to Projects and build something with what you learned.</p></div>`
+        }
+      </section>
+      <section class="card">
+        <div class="row between"><p style="font-family:var(--font-display);font-size:2.2rem;font-weight:800">Level ${l.level}</p><p class="muted">${S.xp} XP total</p></div>
+        <div style="margin-top:.6rem">${xpbar(l.current, l.needed)}</div>
+        <p class="small muted" style="margin-top:.4rem">${l.needed - l.current} XP to level ${l.level + 1}</p>
+        <dl class="grid" style="grid-template-columns:repeat(3,1fr);gap:.5rem;margin:1rem 0 0">
+          <div class="stat"><dt>Streak</dt><dd>🔥 ${streak()}</dd></div>
+          <div class="stat"><dt>Quests</dt><dd>${done}/${QUESTS.length}</dd></div>
+          <div class="stat"><dt>Badges</dt><dd>${earned.length}/${C.ACHIEVEMENTS.length}</dd></div>
+        </dl>
+      </section>
+    </div>
+    <section class="card">
+      <div class="row between" style="margin-bottom:1rem"><h2>Learning path</h2><a class="btn btn-ghost" href="#/courses">All courses</a></div>
+      ${trail(ms, { linked: true, wide: true })}
+    </section>
+    <div class="grid g-2">
+      <section class="card">
+        <h2>Weak topics</h2>
+        ${
+          weak.length
+            ? `<ul class="list" style="margin-top:.8rem">${weak.map((w) => `<li class="item weak row between"><span class="bold">${esc(w.topic)}</span><span class="small" style="color:var(--red)">${w.count} mistake${w.count > 1 ? "s" : ""}</span></li>`).join("")}</ul>`
+            : `<p class="muted" style="margin-top:.8rem">No weak topics yet. Failed tests and English mistakes show up here.</p>`
+        }
+      </section>
+      <section class="card">
+        <h2>Achievements</h2>
+        ${
+          earned.length
+            ? `<ul class="pill-row list" style="margin-top:.8rem">${earned.slice(0, 6).map((a) => `<li class="badge b-marker" title="${esc(a.description)}" style="margin:0;padding:.3rem .8rem"><span aria-hidden="true">${a.icon}</span>${esc(a.title)}</li>`).join("")}</ul>`
+            : `<p class="muted" style="margin-top:.8rem">Pass your first quest to earn “First steps”.</p>`
+        }
+        <a class="btn btn-ghost" style="margin-top:.6rem" href="#/profile">See all badges</a>
+      </section>
+    </div>
+  </div>`;
+};
+
+/* ============================ views: courses ============================ */
+VIEWS.courses = () => `
+  <header style="margin-bottom:1.5rem"><h1>Courses</h1><p class="muted" style="margin-top:.3rem">Follow the path in order, or jump to what your semester needs now.</p></header>
+  <ol class="grid g-3 list">${mastery()
+    .map(
+      (c) => `<li style="margin:0"><a href="#/course/${c.id}" style="text-decoration:none;color:inherit;display:block;height:100%">
+      <div class="card" style="height:100%">
+        <div class="row between"><span style="font-size:2rem" aria-hidden="true">${c.icon}</span><span class="badge" style="background:var(--paper);color:var(--ink-soft)">Step ${c.position}</span></div>
+        <h2 style="font-size:1.5rem;margin-top:.7rem">${esc(c.title)}</h2>
+        <p class="muted" style="margin-top:.3rem">${esc(c.summary)}</p>
+        <div class="row" style="margin-top:1rem;flex-wrap:nowrap">${pbar(c.mastery, c.title + " mastery", c.mastery === 100)}<span class="small bold" style="flex-shrink:0">${c.total ? `${c.done}/${c.total}` : "Guide"}</span></div>
+      </div></a></li>`,
+    )
+    .join("")}</ol>`;
+
+VIEWS.course = (id) => {
+  const c = CMAP[id];
+  if (!c) return VIEWS.notfound();
+  const qs = QUESTS.filter((q) => q.courseId === id);
+  const done = qs.filter((q) => passed(q.id)).length;
+  return `<div class="stack">
+    <a class="btn btn-ghost" href="#/courses">← Courses</a>
+    <header class="row" style="gap:1rem">
+      <span style="font-size:3rem" aria-hidden="true">${c.icon}</span>
+      <div style="flex:1;min-width:14rem"><h1>${esc(c.title)}</h1><p class="muted">${esc(c.summary)}</p></div>
+      ${qs.length ? `<div style="width:min(100%,16rem)"><div class="row between small bold" style="margin-bottom:.3rem"><span>Mastery</span><span>${done}/${qs.length} quests</span></div>${pbar((done / qs.length) * 100, "Course mastery", done === qs.length)}</div>` : ""}
+    </header>
+    ${c.id === "projects" ? `<div class="note info"><p class="bold">Your project tracker lives on the Projects page.</p><a class="btn btn-primary" style="margin-top:.6rem" href="#/projects">Open projects</a></div>` : ""}
+    ${c.modules
+      .map(
+        (m, mi) => `<section class="stack-sm"><h2 style="font-size:1.5rem">Module ${mi + 1}: ${esc(m.title)}</h2>
+        ${m.lessons.map((l) => lessonCard(l, qs)).join("")}</section>`,
+      )
+      .join("")}
+  </div>`;
+};
+function lessonCard(l, courseQuests) {
+  const checkId = l.id + "-check";
+  const checkDone = passed(checkId);
+  const lqs = courseQuests.filter((q) => q.lessonId === l.id);
+  return `<article class="card" style="margin-top:.75rem">
+    <h3 style="font-size:1.3rem">${esc(l.title)}</h3>
+    <div style="max-width:70ch;margin-top:.4rem">${md(l.body)}</div>
+    ${l.example ? `<div class="md" style="max-width:70ch"><pre><code>${esc(l.example)}</code></pre></div>` : ""}
+    <form data-form="check" data-id="${l.id}" style="margin-top:1rem;border:2px dashed var(--line);border-radius:14px;padding:1rem">
+      <fieldset style="border:0;margin:0;padding:0">
+        <legend class="bold">Quick check</legend>
+        <pre class="mono small" style="white-space:pre-wrap;margin:.4rem 0 0">${esc(l.check.prompt)}</pre>
+        <div class="grid g-2" style="gap:.5rem;margin-top:.7rem">${l.check.options
+          .map((o, i) => `<label class="choice"><input type="radio" name="choice" value="${i}" ${checkDone ? "disabled" : ""}><span class="mono small">${esc(o)}</span></label>`)
+          .join("")}</div>
+      </fieldset>
+      ${checkDone ? "" : `<button class="btn btn-secondary" style="margin-top:.8rem">Check answer</button>`}
+      <div class="check-result" role="status" style="margin-top:.7rem">${checkDone ? `<p class="note ok">✓ ${esc(l.check.explanation)}</p>` : ""}</div>
+    </form>
+    ${
+      lqs.length
+        ? `<ul class="list" style="margin-top:1rem">${lqs
+            .map((q) => {
+              const ok = passed(q.id);
+              const open = unlocked(q);
+              return `<li class="item ${ok ? "pass" : open ? "" : "locked"} row between">
+                <div class="row"><span aria-hidden="true">${ok ? "✅" : open ? "⚔️" : "🔒"}</span><span class="bold">${esc(q.title)}</span>${diffBadge(q.difficulty)}</div>
+                ${open ? `<a class="btn ${ok ? "btn-secondary" : "btn-primary"}" href="#/quest/${q.id}">${ok ? "Replay" : `Start (+${XP[q.difficulty]} XP)`}</a>` : `<span class="small muted">Pass the previous quest to unlock</span>`}
+              </li>`;
+            })
+            .join("")}</ul>`
+        : ""
+    }
+  </article>`;
+}
+FORM.check = (f, fd) => {
+  const l = LESSONS.find((x) => x.id === f.dataset.id);
+  const box = f.querySelector(".check-result");
+  const v = fd.get("choice");
+  if (v === null) {
+    box.innerHTML = `<p class="note warn">Pick an answer first.</p>`;
+    return;
+  }
+  if (Number(v) !== l.check.answerIndex) {
+    touch();
+    save();
+    box.innerHTML = `<p class="note bad">✗ Not quite. Read the lesson again and try another option.</p>`;
+    return;
+  }
+  const xp = complete(l.id + "-check", "question", 10);
+  box.innerHTML = `<p class="note ok">✓ ${esc(l.check.explanation)}${xp ? ` <strong>+${xp} XP</strong>` : ""}</p>`;
+  f.querySelectorAll("input").forEach((i) => (i.disabled = true));
+  const b = f.querySelector("button");
+  if (b) b.remove();
+};
+
+/* ============================ engine loader ============================ */
+const LIBS = [
+  "https://cdn.jsdelivr.net/npm/skulpt@1.2.0/dist/skulpt.min.js",
+  "https://cdn.jsdelivr.net/npm/skulpt@1.2.0/dist/skulpt-stdlib.js",
+  "https://cdn.jsdelivr.net/npm/alasql@4.19.1/dist/alasql.min.js",
+];
+let enginePromise = null;
+function loadScript(src) {
+  return new Promise((res, rej) => {
+    const s = document.createElement("script");
+    s.src = src;
+    s.onload = res;
+    s.onerror = () => rej(new Error("Could not load " + src));
+    document.head.appendChild(s);
+  });
+}
+function ensureEngine() {
+  if (!enginePromise)
+    enginePromise = (async () => {
+      await loadScript(LIBS[0]);
+      await Promise.all([loadScript(LIBS[1]), loadScript(LIBS[2])]);
+    })().catch((e) => {
+      enginePromise = null;
+      throw e;
+    });
+  return enginePromise;
+}
+
+/* ============================ views: quest ============================ */
+const QS = { quest: null, code: "", results: null, output: null, busy: "", fails: 0 };
+const draftKey = (id) => "aq-draft-" + id;
+VIEWS.quest = (id) => {
+  const q = QMAP[id];
+  if (!q) return VIEWS.notfound();
+  const c = CMAP[q.courseId];
+  if (!unlocked(q))
+    return `<div class="stack"><a class="btn btn-ghost" href="#/course/${c.id}">← ${esc(c.title)}</a>
+      <div class="empty"><p class="bold">🔒 This quest is locked</p><p class="muted" style="margin-top:.4rem">Pass the previous quest in ${esc(c.title)} first.</p><a class="btn btn-primary" style="margin-top:1rem" href="#/course/${c.id}">Back to course</a></div></div>`;
+  QS.quest = q;
+  QS.code = localGet(draftKey(id)) ?? q.starterCode;
+  QS.results = null;
+  QS.output = null;
+  QS.busy = "";
+  QS.fails = 0;
+  const l = lp(S.xp);
+  const hintsShown = Math.min(S.progress[id]?.hints || 0, q.hints.length);
+  const usesInput = q.tests.some((t) => t.kind === "output" && t.stdin);
+  const isAi = false;
+  const isSql = q.lang === "sql";
+  return `<div class="stack">
+    <div class="row between">
+      <a class="btn btn-ghost" href="#/course/${c.id}">← ${esc(c.title)}</a>
+      <div class="row" style="width:min(100%,19rem);flex-wrap:nowrap" id="q-level"><span class="bold" style="flex-shrink:0">Level ${l.level}</span>${xpbar(l.current, l.needed, "sm")}<span class="small muted" style="flex-shrink:0">${l.current}/${l.needed}</span></div>
+    </div>
+    <header>
+      <div class="row">${diffBadge(q.difficulty)}<span class="muted">${esc(q.topic)}</span>${passed(id) ? `<span class="badge b-done">Passed</span>` : ""}</div>
+      <h1 style="margin-top:.5rem"><span aria-hidden="true">⚔️</span> ${esc(q.title)}</h1>
+    </header>
+    <div class="grid g-quest">
+      <section class="stack">
+        <div class="card"><h2 style="font-size:1.1rem">Instructions</h2><div style="margin-top:.4rem">${md(q.instructions)}</div>
+          <p class="small bold" style="margin-top:.7rem">Reward: +${XP[q.difficulty]} XP${passed(id) ? " (already earned)" : ""}</p>
+          ${q.lite ? `<p class="note info small" style="margin-top:.7rem">This quest uses NumPy/Pandas Lite, a small in-browser version with the main features. Make masks with <code>.gt()</code>, <code>.lt()</code> and friends, since <code>a &gt; 1</code> can't build a mask here.</p>` : ""}
+        </div>
+        <div id="q-hints">${hintsHtml(q, hintsShown)}</div>
+      </section>
+      <section class="stack">
+        <div class="editor">
+          <div class="editor-head"><label for="editor">${isSql ? "query.sql" : "main.py"}</label><span id="q-engine">${isAi ? "Checked by AI" : "Loading Python…"}</span></div>
+          <div class="editor-body"><div class="gutter" id="gutter" aria-hidden="true"></div>
+            <textarea id="editor" class="code-input" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" data-gramm="false">${esc(QS.code)}</textarea></div>
+        </div>
+        ${usesInput ? `<label class="field"><span>Input for Run (one value per line)</span><textarea id="stdin" class="input mono small" rows="2"></textarea></label>` : ""}
+        <div class="row">
+          ${isAi ? "" : `<button class="btn btn-secondary" data-act="q-run" id="b-run" disabled>▶ Run</button>`}
+          <button class="btn btn-primary" data-act="q-submit" id="b-submit" ${isAi ? "" : "disabled"}>${isAi ? "Submit for AI check" : "Submit"}</button>
+          <button class="btn btn-secondary" data-act="q-hint"><span>💡 Hint (<span id="hint-count">${hintsShown}</span>/${q.hints.length})</span></button>
+          <button class="btn btn-ghost" data-act="q-reset">Reset code</button>
+        </div>
+        <p class="small muted">Ctrl + Enter submits. Tab adds 4 spaces.</p>
+        <div id="q-msg"></div>
+        <div id="q-reward"></div>
+        <div class="card"><h2 style="font-size:1.1rem">Output</h2><div id="q-out"><p class="muted" style="margin-top:.4rem">${isAi ? "Output isn't available for AI-checked quests. Trace your code by hand first." : "Press Run to see what your code prints. Predict the output first."}</p></div></div>
+        <div class="card"><h2 style="font-size:1.1rem">Tests</h2><ul class="list" id="q-tests" style="margin-top:.6rem">${testsHtml(q, null)}</ul></div>
+      </section>
+    </div>
+  </div>`;
+};
+function hintsHtml(q, n) {
+  if (!n) return "";
+  return `<div class="card" style="border:2px solid var(--marker);background:var(--marker-soft)"><h2 style="font-size:1.1rem">Hints</h2><ol style="margin:.5rem 0 0;padding-left:1.2rem">${q.hints
+    .slice(0, n)
+    .map((h) => `<li>${inl(h)}</li>`)
+    .join("")}</ol></div>`;
+}
+function testsHtml(q, results) {
+  return q.tests
+    .map((t, i) => {
+      const r = results?.[i];
+      const cls = !r ? "" : r.passed ? "pass" : "fail";
+      let detail = "";
+      if (r && !r.passed) {
+        const bits = [];
+        if (r.call) bits.push(`call: ${esc(r.call)}`);
+        if (r.error) bits.push(`<span class="err">${esc(r.error)}</span>`);
+        else {
+          if (r.expected !== null && r.expected !== undefined) bits.push(`expected: ${esc(r.expected)}`);
+          if (r.got !== null && r.got !== undefined) bits.push(`got: ${String(r.got).trim() === "" ? "(nothing printed)" : esc(r.got)}`);
+        }
+        detail = `<div class="mono small" style="margin-top:.3rem;white-space:pre-wrap">${bits.join("<br>")}</div>`;
+      }
+      return `<li class="item ${cls}"><p class="bold"><span aria-hidden="true">${!r ? "○" : r.passed ? "✓" : "✗"}</span> ${esc(t.name)}<span class="sr-only"> ${!r ? "not run" : r.passed ? "passed" : "failed"}</span></p>${detail}</li>`;
+    })
+    .join("");
+}
+VIEWS.quest_mount = (id) => {
+  const q = QMAP[id];
+  if (!q || !unlocked(q)) return;
+  const ed = $("#editor");
+  const gutter = $("#gutter");
+  const sync = () => {
+    const n = ed.value.split("\n").length;
+    gutter.textContent = Array.from({ length: n }, (_, i) => i + 1).join("\n");
+    ed.rows = Math.max(12, n + 2);
+  };
+  sync();
+  ed.addEventListener("input", () => {
+    QS.code = ed.value;
+    localSet(draftKey(id), ed.value);
+    sync();
+    setTutorCtx();
+  });
+  ed.addEventListener("keydown", (e) => {
+    if (e.key === "Tab" && !e.shiftKey) {
+      e.preventDefault();
+      ed.setRangeText("    ", ed.selectionStart, ed.selectionEnd, "end");
+      ed.dispatchEvent(new Event("input"));
+    } else if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
+      e.preventDefault();
+      ACT["q-submit"]();
+    } else if (e.key === "Enter" && !e.shiftKey && !e.altKey) {
+      const s = ed.selectionStart;
+      const before = ed.value.slice(0, s);
+      const line = before.slice(before.lastIndexOf("\n") + 1);
+      const indent = (line.match(/^\s*/) || [""])[0] + (line.trimEnd().endsWith(":") ? "    " : "");
+      if (!indent) return;
+      e.preventDefault();
+      ed.setRangeText("\n" + indent, s, ed.selectionEnd, "end");
+      ed.dispatchEvent(new Event("input"));
+    }
+  });
+  setTutorCtx();
+  if (q.lang === "ai") return;
+  ensureEngine().then(
+    () => {
+      if (QS.quest !== q) return;
+      $("#q-engine").textContent = q.lang === "sql" ? "SQL ready" : "Python ready";
+      $("#b-run").disabled = false;
+      $("#b-submit").disabled = false;
+    },
+    () => {
+      const el = $("#q-engine");
+      if (el) el.textContent = "Python failed to load. Check your internet and reload.";
+    },
+  );
+};
+function setTutorCtx() {
+  const q = QS.quest;
+  if (!q) return;
+  const summary = QS.results
+    ? QS.results.map((r) => `${r.passed ? "PASS" : "FAIL"} ${r.name}${r.passed ? "" : ` | expected: ${r.expected ?? "-"} | got: ${r.got ?? "-"} | error: ${r.error ?? "-"}`}`).join("\n")
+    : QS.output
+      ? `${QS.output.stdout}${QS.output.error ? "\n" + QS.output.error : ""}`
+      : "";
+  tutor.ctx = { quest: q, code: QS.code, output: summary };
+}
+function setBusy(b) {
+  QS.busy = b;
+  const q = QS.quest;
+  for (const [id, label, busyLabel] of [
+    ["b-run", "▶ Run", "Running…"],
+    ["b-submit", q?.lang === "ai" ? "Submit for AI check" : "Submit", q?.lang === "ai" ? "Checking…" : "Testing…"],
+  ]) {
+    const el = document.getElementById(id);
+    if (!el) continue;
+    el.disabled = !!b;
+    el.textContent = b && ((b === "run" && id === "b-run") || (b === "submit" && id === "b-submit")) ? busyLabel : label;
+  }
+}
+ACT["q-run"] = async () => {
+  const q = QS.quest;
+  if (!q || QS.busy || typeof Engine === "undefined") return;
+  setBusy("run");
+  try {
+    const stdin = $("#stdin")?.value || "";
+    QS.output = await Engine.run(q, QS.code, stdin);
+  } catch (e) {
+    QS.output = { stdout: "", error: String(e.message || e) };
+  }
+  setBusy("");
+  const o = QS.output;
+  $("#q-out").innerHTML = `<pre class="output">${esc(o.stdout || (!o.error ? "(nothing printed)" : ""))}${o.error ? `<span class="err">${o.stdout ? "\n" : ""}${esc(o.error)}</span>` : ""}</pre>`;
+  touch();
+  save();
+  setTutorCtx();
+};
+ACT["q-submit"] = async () => {
+  const q = QS.quest;
+  if (!q || QS.busy) return;
+  if (typeof Engine === "undefined") return;
+  setBusy("submit");
+  $("#q-msg").innerHTML = "";
+  $("#q-reward").innerHTML = "";
+  let results;
+  try {
+    results = await Engine.test(q, QS.code);
+  } catch (e) {
+    setBusy("");
+    $("#q-msg").innerHTML = `<p class="note bad">${esc(e.message || e)}</p>`;
+    return;
+  }
+  setBusy("");
+  QS.results = results;
+  $("#q-tests").innerHTML = testsHtml(q, results);
+  setTutorCtx();
+  const ok = results.every((r) => r.passed);
+  if (!ok) {
+    touch();
+    bump(q.id, "quest", "attempts");
+    const f = results.find((r) => !r.passed);
+    mistake(q.topic, "quest", q.id, f.error ? `${q.title}: ${f.name}: ${f.error}` : `${q.title}: ${f.name}: expected ${f.expected ?? "?"}, got ${String(f.got ?? "").trim() || "nothing"}`);
+    save();
+    renderChrome();
+    QS.fails++;
+    const n = results.filter((r) => !r.passed).length;
+    $("#q-msg").innerHTML = `<div class="note bad" role="status"><p>${n} of ${results.length} tests failed. Look at the first red test, fix one thing, and submit again.</p>
+      <button class="btn btn-ghost" style="color:var(--red);margin-top:.3rem" data-act="q-ask-debug">Ask the tutor what went wrong</button></div>`;
+    return;
+  }
+  const xp = complete(q.id, "quest", XP[q.difficulty]);
+  for (const m of S.mistakes) if (m.itemId === q.id) m.resolved = true;
+  save();
+  const next = nextQuest(q);
+  const l = lp(S.xp);
+  $("#q-level").innerHTML = `<span class="bold" style="flex-shrink:0">Level ${l.level}</span>${xpbar(l.current, l.needed, "sm")}<span class="small muted" style="flex-shrink:0">${l.current}/${l.needed}</span>`;
+  $("#q-reward").innerHTML = `<div class="reward" role="status">
+    ${xp ? `<span class="xp-pop" aria-hidden="true">+${xp} XP</span>` : ""}
+    <p style="font-size:1.25rem;font-weight:800;color:var(--green)">Quest complete!</p>
+    <p style="margin-top:.2rem">${xp ? `You earned ${xp} XP. You are level ${l.level}.` : "All tests pass. XP was already earned for this quest."}</p>
+    <p class="muted" style="margin-top:.4rem">Before moving on: can you explain your code in one sentence? Try it with the tutor.</p>
+    <div class="row" style="margin-top:.8rem">${next ? `<a class="btn btn-primary" href="#/quest/${next.id}">Next quest</a>` : ""}<button class="btn btn-secondary" data-act="q-explain">Explain my code</button></div>
+  </div>`;
+};
+ACT["q-hint"] = () => {
+  const q = QS.quest;
+  if (!q) return;
+  const before = Math.min(S.progress[q.id]?.hints || 0, q.hints.length);
+  if (before >= q.hints.length) {
+    openTutor("hint", "I've used all the built-in hints. Give me one slightly stronger hint, not the answer.");
+    return;
+  }
+  const n = Math.min(bump(q.id, "quest", "hints"), q.hints.length);
+  save();
+  $("#q-hints").innerHTML = hintsHtml(q, n);
+  $("#hint-count").textContent = n;
+};
+ACT["q-reset"] = () => {
+  const q = QS.quest;
+  if (!q || !confirm("Reset your code to the starter code?")) return;
+  const ed = $("#editor");
+  ed.value = q.starterCode;
+  ed.dispatchEvent(new Event("input"));
+};
+ACT["q-ask-debug"] = () => openTutor("debug", "My tests failed. What is my mistake? Don't give me the full answer.");
+ACT["q-explain"] = () => openTutor("quiz", "I passed this quest. Ask me to explain my code, then check my explanation.");
+
+/* ============================ AI tutor ============================ */
+const MODES = [
+  ["teach", "Teach", "Teach me the current topic."],
+  ["quiz", "Quiz", "Quiz me."],
+  ["practice", "Practice", "Give me a practice exercise."],
+  ["hint", "Hint", "Give me a small hint."],
+  ["debug", "Debug", "Help me find the bug in my code."],
+  ["review", "Review", "Review my weak areas."],
+  ["exam", "Exam", "Give me an exam question."],
+  ["boss", "Boss", "Give me a boss challenge."],
+];
+const MODE_PROMPTS = {
+  teach: "Mode TEACH: explain the current topic in 2-5 simple sentences, show one very small example, then give one tiny task. Do not solve the task.",
+  quiz: "Mode QUIZ: ask ONE short question about the current topic. When the student answers, say if it is right, explain the mistake if not, then ask the next question.",
+  practice: "Mode PRACTICE: give ONE small coding exercise at the student's level with exact function name, input and expected output. Do not show the solution.",
+  hint: "Mode HINT: give ONE small hint that moves the student one step forward. No full code. If they already had hints, make it a little stronger, but still not the answer.",
+  debug: "Mode DEBUG: read the student's code and error. Point to the exact line and the exact mistake. Explain why in 1-2 sentences. Suggest the minimum change in words. Do not rewrite the whole program.",
+  review: "Mode REVIEW: use the student's weak topics. Pick the most important one, explain the key idea in 2-3 sentences, then ask one question to check it.",
+  exam: "Mode EXAM: write ONE exam-style question (university level, with marks like [5 marks]). Wait for the answer. Then grade it with marks, list mistakes, and explain how to get full marks.",
+  boss: "Mode BOSS: give ONE hard challenge that tests real understanding (edge cases, reasoning), not memorisation. Do not give the solution. Tell the student to submit their attempt.",
+};
+const TUTOR_RULES = `You are the AI Tutor inside AI Quest, a learning game for a Bachelor Year 2 computer science student.
+Rules:
+- Simple English. Short sentences. Use Mandarin (中文) only when a word is hard and a short translation clearly helps.
+- One concept at a time. Short explanations (2-5 sentences), then one tiny example or task.
+- Check understanding first: ask the student to predict, explain or try before you explain more.
+- Never give a full solution to a quest or exercise unless the student has already tried and explicitly asks for it.
+- When the student is wrong: name the exact mistake, give a short reason, then a similar retry.
+- If the student's message has important English mistakes, add "English tip:" with at most 2 corrections, and ask them to rewrite the sentence themselves.
+- Do not create dependency: push the student to think and write code themselves.
+- Use Markdown. Keep code blocks small. No long introductions.`;
+const tutor = { open: false, mode: "teach", log: [], busy: false, ctx: null, ctl: null };
+function renderTutor() {
+  const root = $("#tutor-root");
+  if (!root) return;
+  const fab = document.querySelector(".tutor-fab");
+  if (fab) fab.setAttribute("aria-expanded", String(tutor.open));
+  if (!tutor.open) {
+    root.innerHTML = "";
+    return;
+  }
+  const starter = MODES.find((m) => m[0] === tutor.mode)[2];
+  root.innerHTML = `<aside class="tutor" id="tutor" aria-label="AI Tutor">
+    <div class="tutor-head"><h2>AI Tutor</h2><div class="row" style="gap:.2rem"><button class="btn btn-ghost" data-act="tutor-clear">Clear</button><button class="btn btn-ghost" data-act="tutor-toggle" aria-label="Close tutor">✕</button></div></div>
+    <div class="tutor-modes" role="tablist" aria-label="Tutor mode">${MODES.map(([id, label]) => `<button class="mode" role="tab" aria-selected="${tutor.mode === id}" data-act="tutor-mode" data-mode="${id}">${label}</button>`).join("")}</div>
+    <div class="tutor-log" id="tutor-log" aria-live="polite">
+      ${tutor.log.length ? "" : `<p class="muted">Pick a mode and press <strong>Ask</strong>. Try first, then ask. The tutor gives hints, not full answers.${P.sample ? " <br><span class=\"small\">Uses your Claude usage. Teach, Quiz, Practice, Hint and Review use a lighter model; Debug, Exam and Boss use a stronger one.</span>" : " <em>(Demo mode: open this page on claude.ai for the live tutor.)</em>"}</p>`}
+      ${tutor.log.map((m) => (m.role === "user" ? `<div class="msg-user">${esc(m.content)}</div>` : `<div>${md(m.content)}</div>`)).join("")}
+      ${tutor.busy && !tutor.log.at(-1)?.streaming ? `<p class="muted">Thinking…</p>` : ""}
+    </div>
+    <form class="tutor-form" data-form="tutor"><label for="tutor-input" class="sr-only">Message</label>
+      <textarea id="tutor-input" class="input" rows="2" placeholder="${esc(starter)} (or type your answer)"></textarea>
+      <button class="btn btn-primary" ${tutor.busy ? "disabled" : ""}>Ask</button></form>
+  </aside>`;
+  const log = $("#tutor-log");
+  log.scrollTop = log.scrollHeight;
+  const input = $("#tutor-input");
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      input.form.requestSubmit();
+    }
+  });
+}
+ACT["tutor-toggle"] = () => {
+  tutor.open = !tutor.open;
+  renderTutor();
+  if (tutor.open) $("#tutor-input")?.focus();
+};
+ACT["tutor-clear"] = () => {
+  tutor.ctl?.abort();
+  tutor.log = [];
+  tutor.busy = false;
+  renderTutor();
+};
+ACT["tutor-mode"] = (el) => {
+  tutor.mode = el.dataset.mode;
+  renderTutor();
+};
+FORM.tutor = (f) => {
+  if (tutor.busy) return;
+  const text = $("#tutor-input").value.trim();
+  askTutor(tutor.mode, text);
+};
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && tutor.open) {
+    tutor.open = false;
+    renderTutor();
+  }
+});
+function openTutor(mode, message) {
+  tutor.open = true;
+  tutor.mode = mode;
+  askTutor(mode, message);
+}
+async function askTutor(mode, text) {
+  const content = text || MODES.find((m) => m[0] === mode)[2];
+  const history = tutor.log.filter((m) => !m.streaming).slice(-10);
+  tutor.log.push({ role: "user", content });
+  tutor.busy = true;
+  renderTutor();
+  const q = tutor.ctx?.quest || currentQuest();
+  const weak = weakTopics(3);
+  const hintsUsed = q ? S.progress[q.id]?.hints || 0 : 0;
+  if (!P.sample) {
+    tutor.log.push({ role: "assistant", content: demoReply(mode, q, weak, hintsUsed) });
+    tutor.busy = false;
+    renderTutor();
+    return;
+  }
+  const ctx = [
+    `Student: level ${levelOf(S.xp)} (${S.xp} XP).`,
+    `Current topic: ${q?.topic || "Python basics"}.`,
+    weak.length ? `Weak topics: ${weak.map((w) => `${w.topic} (${w.count} mistakes)`).join(", ")}.` : "Weak topics: none recorded yet.",
+    q ? `Current quest "${q.title}" [${q.difficulty}]:\n${q.instructions}\nBuilt-in hints already shown: ${hintsUsed}.` : "",
+    tutor.ctx?.code ? `Student code:\n\`\`\`\n${tutor.ctx.code}\n\`\`\`` : "",
+    tutor.ctx?.output ? `Last run output / test results:\n${tutor.ctx.output}` : "",
+  ]
+    .filter(Boolean)
+    .join("\n\n");
+  const preamble = `${TUTOR_RULES}\n\n${MODE_PROMPTS[mode]}\n\n<context>\n${ctx}\n</context>\n\nReply as the tutor to the student's latest message.`;
+  const turns = [...history, { role: "user", content }];
+  while (turns.length && turns[0].role !== "user") turns.shift();
+  turns[0] = { role: "user", content: `${preamble}\n\nStudent: ${turns[0].content}` };
+  const msg = { role: "assistant", content: "", streaming: true };
+  tutor.ctl = new AbortController();
+  try {
+    const res = await P.sample(turns, {
+      cache: false,
+      modelTier: ["debug", "exam", "boss"].includes(mode) ? "default" : "quick",
+      signal: tutor.ctl.signal,
+      onText: ({ text }) => {
+        if (!tutor.log.includes(msg)) tutor.log.push(msg);
+        msg.content = text;
+        renderTutorLog();
+      },
+    });
+    msg.content = res.text;
+    if (!tutor.log.includes(msg)) tutor.log.push(msg);
+  } catch (e) {
+    if (e?.code === "cancelled") return;
+    if (!tutor.log.includes(msg)) tutor.log.push(msg);
+    msg.content = (e?.text ? e.text + "\n\n" : "") + (e?.code === "not_granted" ? "_The tutor needs permission to use Claude. Allow it when asked, or use demo mode._" : e?.code === "rate_limited" ? "_Too many questions at once. Wait a minute and try again._" : "_The tutor could not answer. Try again._");
+  } finally {
+    delete msg.streaming;
+    tutor.busy = false;
+    renderTutor();
+  }
+}
+function renderTutorLog() {
+  const log = $("#tutor-log");
+  if (!log) return;
+  log.innerHTML = tutor.log.map((m) => (m.role === "user" ? `<div class="msg-user">${esc(m.content)}</div>` : `<div>${md(m.content)}</div>`)).join("");
+  log.scrollTop = log.scrollHeight;
+}
+function demoReply(mode, q, weak, hintsUsed) {
+  const note = "\n\n_Demo mode: open this page on claude.ai for the live tutor._";
+  switch (mode) {
+    case "hint":
+      return q ? `**Hint:** ${q.hints[Math.min(hintsUsed, q.hints.length - 1)]}\n\nTry one small change, then run your code again.${note}` : "Pick a quest first." + note;
+    case "debug":
+      return (tutor.ctx?.output ? `Look at the first failing test:\n\n\`\`\`\n${tutor.ctx.output.split("\n").slice(0, 6).join("\n")}\n\`\`\`\n\n` : "Run your code first so we can see the error.\n\n") + "Check in this order: 1) the line number in the error, 2) variable names, 3) types (text vs number), 4) return vs print, 5) indentation." + note;
+    case "review":
+      return weak.length ? `Your weakest topic is **${weak[0].topic}** (${weak[0].count} mistakes). Explain the main idea in one sentence before you code.${note}` : `No weak topics yet. Pass a few quests and I will track your mistakes.${note}`;
+    case "exam":
+      return `**Exam question [5 marks]:** Explain the difference between \`print\` and \`return\` in a Python function. Give one example of each.${note}`;
+    case "boss":
+      return `**Boss challenge:** Write \`second_highest(marks)\` that returns the second highest *different* mark, or \`None\` if there isn't one. Test it with \`[90, 90, 70]\` and \`[5]\`.${note}`;
+    case "quiz":
+      return `**Quick question:** What does \`len([3, 1, 4])\` return?${note}`;
+    case "teach":
+      return `**${q?.topic || "Python"}**\n\nFirst, tell me in one sentence what you think this topic is about.${note}`;
+    default:
+      return `**Practice:** Write \`count_even(nums)\` that returns how many even numbers are in the list. \`count_even([1, 2, 4])\` → \`2\`.${note}`;
+  }
+}
+
+/* ============================ English ============================ */
+let engTab = "listening";
+const engState = {};
+VIEWS.english = () => {
+  const tabs = [["reading", "Reading"], ["listening", "Listening"], ["vocab", "Vocabulary"], ["speaking", "Explain it"]];
+  let body = "";
+  if (engTab === "reading") body = C.READING.map(readingHtml).join("");
+  if (engTab === "listening") body = C.LISTENING.map((l) => explainHtml("listening", l)).join("");
+  if (engTab === "speaking") body = C.SPEAKING.map((s) => explainHtml("speaking", s)).join("");
+  if (engTab === "vocab") body = vocabHtml();
+  return `<header style="margin-bottom:1.5rem"><h1>English</h1><p class="muted" style="margin-top:.3rem">Listen, explain in your own words, fix the important mistakes, then rewrite it yourself.</p></header>
+    <div class="pill-row" role="tablist" aria-label="English practice" style="margin-bottom:1.25rem">${tabs.map(([id, l]) => `<button class="chip" role="tab" aria-selected="${engTab === id}" data-act="eng-tab" data-tab="${id}">${l}</button>`).join("")}</div>
+    <div class="stack">${body}</div>`;
+};
+ACT["eng-tab"] = (el) => {
+  engTab = el.dataset.tab;
+  window.speechSynthesis?.cancel();
+  render();
+};
+const doneBadge = (id) => (passed(id) ? `<span class="badge b-done">Completed</span>` : "");
+function readingHtml(r) {
+  return `<section class="card"><div class="row between"><h2>${esc(r.title)}</h2>${doneBadge(r.id)}</div>
+    <p style="margin-top:.7rem;max-width:70ch;line-height:1.75">${esc(r.passage)}</p>
+    <form data-form="reading" data-id="${r.id}" class="stack" style="margin-top:1rem">
+      ${r.questions
+        .map(
+          (q, qi) => `<fieldset style="border:0;margin:0;padding:0"><legend class="bold">${qi + 1}. ${esc(q.prompt)}</legend>
+        <div class="grid g-2" style="gap:.5rem;margin-top:.5rem">${q.options.map((o, oi) => `<label class="choice"><input type="radio" name="q${qi}" value="${oi}">${esc(o)}</label>`).join("")}</div>
+        <p class="small bold r-fb" data-q="${qi}" style="margin-top:.4rem"></p></fieldset>`,
+        )
+        .join("")}
+      <div class="row"><button class="btn btn-primary">Check answers</button><span class="bold r-done" style="color:var(--green)"></span></div>
+    </form></section>`;
+}
+FORM.reading = (f, fd) => {
+  const r = C.READING.find((x) => x.id === f.dataset.id);
+  let all = true;
+  r.questions.forEach((q, qi) => {
+    const v = fd.get("q" + qi);
+    const el = f.querySelector(`.r-fb[data-q="${qi}"]`);
+    const ok = v !== null && Number(v) === q.answerIndex;
+    if (!ok) all = false;
+    el.style.color = ok ? "var(--green)" : "var(--red)";
+    el.textContent = v === null ? "Pick an answer." : ok ? "✓ " + q.explanation : "Not yet. Find the sentence in the passage that answers this, then try again.";
+  });
+  touch();
+  if (all) {
+    const xp = complete(r.id, "english", 10);
+    f.querySelector(".r-done").textContent = "All correct!" + (xp ? ` +${xp} XP` : "");
+  } else save();
+};
+function explainHtml(kind, item) {
+  const st = (engState[item.id] ||= { attempt: 1, answer: "", feedback: null, done: false, showT: false });
+  const isL = kind === "listening";
+  return `<section class="card" data-eng="${item.id}"><div class="row between"><h2>${esc(isL ? item.title : "Explain in your own words")}</h2>${doneBadge(item.id)}</div>
+    ${
+      isL
+        ? `<div class="row" style="margin-top:.8rem;gap:.8rem"><button class="btn btn-primary" data-act="eng-play" data-id="${item.id}">🔊 Play</button>
+           <label class="row small bold">Speed <select class="input" style="width:auto;padding:.3rem .5rem" id="rate-${item.id}"><option value="0.75">Slow</option><option value="0.9" selected>Normal</option><option value="1.05">Fast</option></select></label>
+           <span class="small muted">Listen, then explain what you heard in 2–4 sentences.</span></div>`
+        : `<p class="bold" style="margin-top:.8rem">${esc(item.prompt)}</p>`
+    }
+    <form data-form="eng-check" data-kind="${kind}" data-id="${item.id}" style="margin-top:1rem">
+      <label class="field"><span>${st.attempt === 1 ? "Your answer" : "Rewrite your answer"}</span>
+        <textarea name="answer" class="input" rows="4" placeholder="${isL ? "The speaker said that…" : "A variable is…"}">${esc(st.answer)}</textarea></label>
+      <div class="row" style="margin-top:.5rem"><button class="btn btn-primary">${st.attempt === 1 ? "Check" : "Check my rewrite"}</button>
+        <button type="button" class="btn btn-secondary" data-act="eng-dictate" data-id="${item.id}">🎙 Speak</button>
+        ${isL && st.attempt > 1 ? `<button type="button" class="btn btn-ghost" data-act="eng-transcript" data-id="${item.id}">${st.showT ? "Hide" : "Show"} transcript</button>` : ""}</div>
+    </form>
+    <div class="eng-fb">${st.feedback ? feedbackHtml(st) : ""}</div>
+    ${isL && st.showT ? `<p class="item muted" style="margin-top:.8rem">${esc(item.transcript)}</p>` : ""}
+  </section>`;
+}
+function feedbackHtml(st) {
+  const f = st.feedback;
+  return `<div class="stack-sm" role="status" style="margin-top:1rem;background:var(--paper);border-radius:14px;padding:1rem">
+    <p class="bold" style="color:${f.meaningOk ? "var(--green)" : "var(--orange)"}">${f.meaningOk ? "✓ Meaning: clear" : "Meaning: some ideas missing"}</p>
+    ${f.message ? `<p>${esc(f.message)}</p>` : ""}
+    ${f.missedPoints?.length ? `<div><p class="bold">Missed ideas</p><ul style="margin:.3rem 0 0;padding-left:1.2rem">${f.missedPoints.map((m) => `<li>${esc(m)}</li>`).join("")}</ul></div>` : ""}
+    ${f.grammar?.length ? `<div><p class="bold">English fixes</p><ul class="list" style="margin-top:.3rem">${f.grammar.map((g) => `<li><span style="color:var(--red);text-decoration:line-through">${esc(g.wrong)}</span> → <span class="bold" style="color:var(--green)">${esc(g.fix)}</span> <span class="muted">(${esc(g.why)})</span></li>`).join("")}</ul></div>` : ""}
+    ${f.naturalVersion ? `<div style="border-left:4px solid var(--blue);background:var(--card);border-radius:8px;padding:.7rem"><p class="small bold" style="color:var(--blue)">Natural version</p><p style="margin-top:.2rem">${esc(f.naturalVersion)}</p></div>` : ""}
+    ${st.done ? `<p class="bold" style="color:var(--green)">Exercise complete!${st.xp ? ` +${st.xp} XP` : ""}</p>` : ""}
+  </div>`;
+}
+ACT["eng-play"] = (el) => {
+  const item = C.LISTENING.find((l) => l.id === el.dataset.id);
+  if (!("speechSynthesis" in window)) return toast("This browser can't play speech. Try Chrome or Edge.");
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(item.transcript);
+  u.lang = "en-GB";
+  u.rate = Number($("#rate-" + item.id)?.value || 0.9);
+  window.speechSynthesis.speak(u);
+};
+ACT["eng-transcript"] = (el) => {
+  const st = engState[el.dataset.id];
+  st.showT = !st.showT;
+  render();
+};
+ACT["eng-dictate"] = (el) => {
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SR) return toast("Speech input isn't available here. Type your answer instead.");
+  const form = el.closest("section").querySelector("textarea");
+  try {
+    const rec = new SR();
+    rec.lang = "en-US";
+    rec.interimResults = false;
+    rec.onresult = (e) => {
+      form.value = `${form.value} ${Array.from(e.results).map((r) => r[0].transcript).join(" ")}`.trim();
+    };
+    rec.onerror = () => toast("Speech input was blocked. Type your answer instead.");
+    rec.onend = () => (el.textContent = "🎙 Speak");
+    el.textContent = "■ Listening…";
+    rec.start();
+  } catch {
+    toast("Speech input was blocked. Type your answer instead.");
+  }
+};
+FORM["eng-check"] = async (f, fd) => {
+  const kind = f.dataset.kind;
+  const id = f.dataset.id;
+  const st = engState[id];
+  const answer = String(fd.get("answer") || "").trim();
+  st.answer = answer;
+  if (answer.length < 3) return toast("Write a little more first.");
+  const btn = f.querySelector("button");
+  btn.disabled = true;
+  btn.textContent = "Checking…";
+  let fb = null;
+  const item = kind === "listening" ? C.LISTENING.find((x) => x.id === id) : C.SPEAKING.find((x) => x.id === id);
+  if (P.sample) {
+    const ref = kind === "listening" ? `Audio transcript: ${item.transcript}\nKey points: ${item.keyPoints.map((p) => p.point).join("; ")}` : `Task: ${item.prompt}`;
+    try {
+      const d = await P.sample.json(
+        `You check English answers from a Year 2 university student who is improving their English.
+Flow: 1) check meaning/understanding, 2) find at most 3 IMPORTANT grammar or word-choice mistakes (ignore tiny style issues), 3) ask the student to rewrite it themselves, 4) only when attempt >= 2, give a natural version.
+Reply with ONLY JSON: {"meaningOk": boolean, "missedPoints": string[], "grammar": [{"wrong": string, "fix": string, "why": string}], "message": string (1-2 short encouraging sentences in simple English), "naturalVersion": string | null}
+naturalVersion MUST be null when attempt is 1.
+
+${ref}
+
+Attempt: ${st.attempt}
+Student answer: ${answer}`,
+        { modelTier: "quick" },
+      );
+      if (d && typeof d.meaningOk === "boolean")
+        fb = {
+          meaningOk: d.meaningOk,
+          missedPoints: (d.missedPoints || []).slice(0, 5),
+          grammar: (d.grammar || []).slice(0, 3),
+          message: d.message || "",
+          naturalVersion: st.attempt >= 2 ? d.naturalVersion || null : null,
+        };
+    } catch {}
+  }
+  fb ||= heuristicFeedback(kind, item, answer, st.attempt);
+  st.feedback = fb;
+  touch();
+  if (!fb.meaningOk && fb.missedPoints[0]) mistake(`English ${kind}`, "english", id, `Missed: ${fb.missedPoints[0]}`);
+  if (fb.grammar[0]) mistake("English grammar", "english", id, `${fb.grammar[0].wrong} → ${fb.grammar[0].fix}`);
+  const done = fb.meaningOk && (fb.grammar.length === 0 || st.attempt >= 2);
+  if (done) {
+    st.done = true;
+    st.xp = complete(id, "english", 20);
+  } else save();
+  st.attempt++;
+  render();
+};
+function heuristicFeedback(kind, item, text, attempt) {
+  const lower = text.toLowerCase();
+  const grammar = [];
+  const rules = [
+    [/\binformations\b/i, "information", "'Information' has no plural form."],
+    [/\bdatas\b/i, "data", "'Data' is already plural."],
+    [/\bmore (better|easier|faster|smaller|bigger)\b/i, "$1", "Do not use 'more' with a comparative word."],
+    [/\bcan able to\b/i, "can / am able to", "Use 'can' or 'be able to', not both."],
+    [/\bdiscuss about\b/i, "discuss", "'Discuss' does not need 'about'."],
+    [/\b(it|model|he|she) (learn|store|make|give|use|show|work)\b/i, "$1 $2s", "With he/she/it, add -s to the verb."],
+    [/\ba (unseen|example|input|output|error|array|algorithm|answer)\b/i, "an $1", "Use 'an' before a vowel sound."],
+  ];
+  for (const [re, fix, why] of rules) {
+    const m = text.match(re);
+    if (m) grammar.push({ wrong: m[0], fix: m[0].replace(re, fix), why });
+  }
+  if (/(^|\s)i(\s|')/.test(text)) grammar.push({ wrong: "i", fix: "I", why: "'I' is always a capital letter." });
+  if (text && text[0] !== text[0].toUpperCase()) grammar.push({ wrong: text.split(" ")[0], fix: text.split(" ")[0].replace(/^./, (c) => c.toUpperCase()), why: "Start a sentence with a capital letter." });
+  if (text && !/[.!?]$/.test(text)) grammar.push({ wrong: "(no full stop)", fix: "add . at the end", why: "End every sentence with punctuation." });
+  let missed;
+  let ok;
+  let natural;
+  if (kind === "listening") {
+    missed = item.keyPoints.filter((p) => !p.keywords.some((k) => lower.includes(k))).map((p) => p.point);
+    ok = item.keyPoints.length - missed.length >= Math.ceil(item.keyPoints.length * 0.6);
+    natural = item.modelSummary;
+  } else {
+    missed = item.keywords.filter((k) => !lower.includes(k)).map((k) => `Mention "${k}"`);
+    const sentences = text.split(/[.!?]+/).filter((s) => s.trim().split(/\s+/).length >= 3).length;
+    if (sentences < 2) missed.push("Write at least 2 full sentences");
+    ok = missed.length <= 1 && sentences >= 2;
+    natural = item.modelAnswer;
+  }
+  const g = grammar.slice(0, 3);
+  const msg = [ok ? "Your meaning is clear. 👍" : "Some key ideas are missing."];
+  if (g.length) msg.push("Fix the English points below.");
+  msg.push(attempt < 2 ? "Now rewrite your answer yourself." : "Compare your version with the natural version.");
+  return { meaningOk: ok, missedPoints: missed, grammar: g, message: msg.join(" "), naturalVersion: attempt >= 2 ? natural : null };
+}
+const vocab = { queue: null, flipped: false, quiz: false, result: "" };
+function vocabHtml() {
+  const W = C.VOCABULARY;
+  vocab.queue ||= W.map((_, i) => i);
+  const cur = W[vocab.queue[0]];
+  if (!cur)
+    return `<section class="card"><div class="row between"><h2>Vocabulary set complete</h2>${doneBadge("vocab-set-1")}</div><p style="margin-top:.5rem">You went through all ${W.length} words.</p><button class="btn btn-secondary" style="margin-top:.8rem" data-act="v-restart">Practise again</button></section>`;
+  return `<section class="card"><div class="row between"><h2>Vocabulary (${W.length - vocab.queue.length}/${W.length} learned)</h2>${doneBadge("vocab-set-1")}</div>
+    <label class="row small bold" style="margin-top:.6rem"><input type="checkbox" data-change="v-quiz" ${vocab.quiz ? "checked" : ""} style="accent-color:var(--blue)"> Quiz mode (type the word from its meaning)</label>
+    <div style="margin-top:1rem;border:2px solid var(--ink);border-radius:18px;padding:1.5rem;text-align:center">
+      ${
+        vocab.quiz
+          ? `<p style="font-size:1.1rem">${esc(cur.meaning)}</p>
+             <form data-form="v-guess" class="row" style="justify-content:center;margin-top:1rem;flex-wrap:nowrap;max-width:24rem;margin-inline:auto"><label for="v-g" class="sr-only">Word</label><input id="v-g" name="g" class="input" autocomplete="off"><button class="btn btn-primary">Check</button></form>
+             ${vocab.result === "right" ? `<p class="bold" style="color:var(--green);margin-top:.8rem">✓ ${esc(cur.word)}. “${esc(cur.example)}”</p>` : vocab.result === "wrong" ? `<p class="bold" style="color:var(--red);margin-top:.8rem">Not yet. First letter: “${esc(cur.word[0])}”. Try again.</p>` : ""}`
+          : `<p style="font-family:var(--font-display);font-size:2rem;font-weight:800">${esc(cur.word)}</p>
+             ${vocab.flipped ? `<p style="font-size:1.1rem;margin-top:.7rem">${esc(cur.meaning)}</p><p class="muted" style="margin-top:.4rem;font-style:italic">“${esc(cur.example)}”</p>` : `<p class="muted" style="margin-top:.7rem">Say the meaning out loud, then flip.</p>`}`
+      }
+    </div>
+    <div class="row" style="justify-content:center;margin-top:1rem">
+      ${!vocab.quiz && !vocab.flipped ? `<button class="btn btn-primary" data-act="v-flip">Flip card</button>` : ""}
+      ${vocab.flipped || vocab.result === "right" ? `<button class="btn btn-primary" data-act="v-next" data-known="1">I know it</button><button class="btn btn-secondary" data-act="v-next" data-known="0">Review again</button>` : ""}
+      ${vocab.quiz && vocab.result === "wrong" ? `<button class="btn btn-ghost" data-act="v-next" data-known="0">Skip for now</button>` : ""}
+    </div></section>`;
+}
+ACT["v-flip"] = () => {
+  vocab.flipped = true;
+  render();
+};
+ACT["v-next"] = (el) => {
+  const first = vocab.queue[0];
+  vocab.queue = vocab.queue.slice(1);
+  if (el.dataset.known !== "1") vocab.queue.push(first);
+  vocab.flipped = false;
+  vocab.result = "";
+  if (!vocab.queue.length) {
+    const xp = complete("vocab-set-1", "english", 10);
+    if (xp) toast(`+${xp} XP for the vocabulary set`);
+  }
+  render();
+};
+ACT["v-restart"] = () => {
+  vocab.queue = null;
+  render();
+};
+CHANGE["v-quiz"] = (el) => {
+  vocab.quiz = el.checked;
+  vocab.result = "";
+  render();
+};
+FORM["v-guess"] = (f, fd) => {
+  const cur = C.VOCABULARY[vocab.queue[0]];
+  vocab.result = String(fd.get("g") || "").trim().toLowerCase() === cur.word ? "right" : "wrong";
+  render();
+  $("#v-g")?.focus();
+};
+
+/* ============================ CGPA ============================ */
+const GRADES = ["A+", "A", "A-", "B+", "B", "B-", "C+", "C"];
+const prep = { material: "", subject: "", result: null, busy: false, error: "" };
+VIEWS.cgpa = () => {
+  const tasks = [...S.tasks].sort((a, b) => Number(a.status === "done") - Number(b.status === "done") || (a.due || "9999").localeCompare(b.due || "9999"));
+  const t = today();
+  return `<header style="margin-bottom:1.5rem"><h1>CGPA</h1><p class="muted" style="margin-top:.3rem;max-width:62ch">Track subjects and deadlines, see what you are weak at, and turn your own lecture material into exam practice.</p></header>
+  <div class="stack">
+    <div class="grid g-side">
+      <section class="card"><h2>Subjects</h2>
+        <form data-form="subject" class="grid" style="grid-template-columns:1fr 1fr;gap:.5rem;margin-top:.8rem">
+          <label style="grid-column:1/-1"><span class="sr-only">Subject name</span><input name="name" required maxlength="80" class="input" placeholder="Subject name, e.g. Data Structures"></label>
+          <label><span class="sr-only">Code</span><input name="code" maxlength="20" class="input" placeholder="Code (optional)"></label>
+          <label class="row small bold" style="flex-wrap:nowrap">Credits <input name="credits" type="number" min="1" max="12" value="3" class="input"></label>
+          <label class="row small bold" style="flex-wrap:nowrap">Target <select name="target" class="input">${GRADES.map((g) => `<option ${g === "A" ? "selected" : ""}>${g}</option>`).join("")}</select></label>
+          <button class="btn btn-primary">Add subject</button>
+        </form>
+        <ul class="list" style="margin-top:1rem">${
+          S.subjects.length
+            ? S.subjects
+                .map((s) => {
+                  const st = S.tasks.filter((x) => x.subjectId === s.id);
+                  const wt = st.reduce((n, x) => n + (x.weight || 0), 0);
+                  const wd = st.filter((x) => x.status === "done").reduce((n, x) => n + (x.weight || 0), 0);
+                  const pct = st.length ? (wt ? (wd / wt) * 100 : (st.filter((x) => x.status === "done").length / st.length) * 100) : 0;
+                  return `<li class="item"><div class="row between" style="align-items:flex-start"><div><p class="bold">${esc(s.name)}</p><p class="small muted">${esc([s.code, `${s.credits} credits`, `target ${s.target}`].filter(Boolean).join(", "))}</p></div>
+                    <button class="btn-danger btn" data-act="subject-del" data-id="${s.id}">Delete</button></div>
+                    <div class="row" style="margin-top:.5rem;flex-wrap:nowrap">${pbar(pct, s.name + " progress", pct === 100)}<span class="small bold" style="flex-shrink:0">${Math.round(pct)}%</span></div>
+                    ${wt ? `<p class="small muted" style="margin-top:.3rem">${wd}% of ${wt}% tracked marks done</p>` : ""}</li>`;
+                })
+                .join("")
+            : `<li class="empty"><p class="bold">No subjects yet</p><p class="muted">Add this semester's subjects to start tracking.</p></li>`
+        }</ul>
+      </section>
+      <section class="card"><h2>Assignments and exams</h2>
+        ${
+          S.subjects.length
+            ? `<form data-form="task" class="grid" style="grid-template-columns:repeat(6,1fr);gap:.5rem;margin-top:.8rem">
+            <label style="grid-column:1/-1"><span class="sr-only">Task title</span><input name="title" required maxlength="120" class="input" placeholder="e.g. Assignment 1: EDA report"></label>
+            <label style="grid-column:span 3"><span class="sr-only">Subject</span><select name="subjectId" class="input">${S.subjects.map((s) => `<option value="${s.id}">${esc(s.name)}</option>`).join("")}</select></label>
+            <label style="grid-column:span 3"><span class="sr-only">Type</span><select name="type" class="input"><option value="assignment">Assignment</option><option value="exam">Exam</option><option value="quiz">Quiz</option><option value="revision">Revision</option></select></label>
+            <label style="grid-column:span 2"><span class="sr-only">Weight %</span><input name="weight" type="number" min="0" max="100" class="input" placeholder="Weight %"></label>
+            <label style="grid-column:span 2"><span class="sr-only">Due date</span><input name="due" type="date" class="input"></label>
+            <button class="btn btn-primary" style="grid-column:span 2">Add task</button></form>`
+            : `<p class="muted" style="margin-top:.8rem">Add a subject first.</p>`
+        }
+        <ul class="list" style="margin-top:1rem">${
+          tasks.length
+            ? tasks
+                .map((x) => {
+                  const s = S.subjects.find((y) => y.id === x.subjectId);
+                  const overdue = x.due && x.due < t && x.status !== "done";
+                  return `<li class="item row" style="${x.status === "done" ? "background:var(--green-soft);border-color:transparent" : overdue ? "border-color:var(--red)" : ""}">
+                    <div style="flex:1;min-width:12rem"><p class="bold" style="${x.status === "done" ? "text-decoration:line-through;opacity:.7" : ""}">${esc(x.title)}</p>
+                    <p class="small muted">${esc([s?.name, x.type, x.weight != null ? x.weight + "%" : null, x.due ? "due " + x.due : null].filter(Boolean).join(", "))}${overdue ? ` <span class="bold" style="color:var(--red)">(overdue)</span>` : ""}</p></div>
+                    <label class="sr-only" for="st-${x.id}">Status</label><select id="st-${x.id}" class="input" style="width:auto" data-change="task-status" data-id="${x.id}">${[["todo", "To do"], ["doing", "Doing"], ["done", "Done"]].map(([v, l]) => `<option value="${v}" ${x.status === v ? "selected" : ""}>${l}</option>`).join("")}</select>
+                    <button class="btn btn-danger" data-act="task-del" data-id="${x.id}" aria-label="Delete ${esc(x.title)}">✕</button></li>`;
+                })
+                .join("")
+            : S.subjects.length
+              ? `<li class="empty"><p class="bold">No tasks yet</p><p class="muted">Add your next assignment or exam with its weight.</p></li>`
+              : ""
+        }</ul>
+      </section>
+    </div>
+    <div class="grid g-side">
+      <section class="card"><h2>Weak topics</h2><p class="small muted" style="margin-top:.3rem">Filled in from failed tests and English checks. Add your own from lectures.</p>
+        <form data-form="weak" class="row" style="margin-top:.8rem;flex-wrap:nowrap"><label style="flex:1"><span class="sr-only">Topic</span><input name="topic" required maxlength="80" class="input" placeholder="e.g. Recursion"></label><button class="btn btn-secondary">Add</button></form>
+        <ul class="list" style="margin-top:.8rem">${
+          weakTopics(20).length
+            ? weakTopics(20).map((w) => `<li class="item weak row between"><span><span class="bold">${esc(w.topic)}</span> <span class="small" style="color:var(--red)">(${w.count})</span></span><button class="btn btn-ghost" data-act="weak-fix" data-topic="${esc(w.topic)}">Mark as fixed</button></li>`).join("")
+            : `<li class="muted">Nothing here. Nice.</li>`
+        }</ul>
+      </section>
+      <section class="card" id="prep"><h2>Exam preparation</h2>
+        <p class="small muted" style="margin-top:.3rem">Paste lecture slides, an assignment brief, a rubric or a past paper (or load a .txt / .md file). Questions are built only from what you give.</p>
+        <div class="stack-sm" style="margin-top:.8rem">
+          <label class="block"><span class="sr-only">Subject</span><select id="prep-subject" class="input"><option value="">Subject (optional)</option>${S.subjects.map((s) => `<option ${prep.subject === s.name ? "selected" : ""}>${esc(s.name)}</option>`).join("")}</select></label>
+          <label><span class="sr-only">Material</span><textarea id="prep-text" class="input mono small" rows="7" maxlength="40000" placeholder="Paste text from your slides or rubric here…">${esc(prep.material)}</textarea></label>
+          <div class="row between"><label class="btn btn-ghost" style="cursor:pointer">Load text file<input type="file" accept=".txt,.md,.csv,text/plain" class="sr-only" data-change="prep-file"></label>
+            <button class="btn btn-primary" data-act="prep-go" ${prep.busy ? "disabled" : ""}>${prep.busy ? "Reading your material…" : "Generate practice"}</button></div>
+          ${prep.error ? `<p class="note bad" role="alert">${esc(prep.error)}</p>` : ""}
+        </div>
+        ${prep.result ? prepHtml(prep.result) : ""}
+      </section>
+    </div>
+  </div>`;
+};
+function prepHtml(r) {
+  return `<div class="stack" style="margin-top:1.2rem">
+    ${r.marks?.length ? `<div><h3>Marks and requirements found</h3><div class="scroll-x"><table style="margin-top:.4rem"><thead><tr><th>Item</th><th style="text-align:right">Marks</th></tr></thead><tbody>${r.marks.map((m) => `<tr><td>${esc(m.item)}</td><td style="text-align:right" class="bold">${esc(m.marks)}</td></tr>`).join("")}</tbody></table></div></div>` : ""}
+    ${r.concepts?.length ? `<div><h3>Key concepts</h3><ul class="pill-row list" style="margin-top:.5rem">${r.concepts.map((c) => `<li class="badge d-medium" style="margin:0;padding:.3rem .8rem">${esc(c)}</li>`).join("")}</ul></div>` : ""}
+    <div><h3>Practice questions</h3><ol style="margin:.5rem 0 0;padding-left:1.2rem">${(r.questions || []).map((q) => `<li style="margin-top:.4rem">${esc(q.question)} <span class="bold muted">[${Number(q.marks) || "?"} marks]</span></li>`).join("")}</ol>
+    <p class="small muted" style="margin-top:.6rem">Answer on paper first, then ask the AI Tutor in Exam mode to grade one answer.</p></div>
+    ${r.notFound ? `<p class="note warn small">${esc(r.notFound)}</p>` : ""}
+  </div>`;
+}
+FORM.subject = (f, fd) => {
+  S.subjects.push({ id: uid(), name: String(fd.get("name")).trim().slice(0, 80), code: String(fd.get("code") || "").trim().slice(0, 20), credits: Math.min(12, Math.max(1, Number(fd.get("credits")) || 3)), target: GRADES.includes(fd.get("target")) ? fd.get("target") : "A" });
+  save();
+  render();
+};
+ACT["subject-del"] = (el) => {
+  const s = S.subjects.find((x) => x.id === el.dataset.id);
+  if (!s || !confirm(`Delete ${s.name} and its tasks?`)) return;
+  S.subjects = S.subjects.filter((x) => x.id !== s.id);
+  S.tasks = S.tasks.filter((x) => x.subjectId !== s.id);
+  save();
+  render();
+};
+FORM.task = (f, fd) => {
+  const w = fd.get("weight");
+  const due = String(fd.get("due") || "");
+  S.tasks.push({ id: uid(), subjectId: String(fd.get("subjectId")), title: String(fd.get("title")).trim().slice(0, 120), type: String(fd.get("type")), weight: w === "" || w === null ? null : Math.min(100, Math.max(0, Number(w))), due: /^\d{4}-\d{2}-\d{2}$/.test(due) ? due : null, status: "todo" });
+  touch();
+  checkAchievements();
+  save();
+  render();
+};
+CHANGE["task-status"] = (el) => {
+  const t = S.tasks.find((x) => x.id === el.dataset.id);
+  if (!t) return;
+  t.status = el.value;
+  if (t.status === "done") touch();
+  save();
+  render();
+};
+ACT["task-del"] = (el) => {
+  S.tasks = S.tasks.filter((x) => x.id !== el.dataset.id);
+  save();
+  render();
+};
+FORM.weak = (f, fd) => {
+  mistake(String(fd.get("topic")).trim().slice(0, 80), "manual", null, "Added by me");
+  save();
+  render();
+};
+ACT["weak-fix"] = (el) => {
+  for (const m of S.mistakes) if (m.topic === el.dataset.topic) m.resolved = true;
+  save();
+  render();
+};
+CHANGE["prep-file"] = (el) => {
+  const file = el.files?.[0];
+  if (!file) return;
+  if (file.size > 400000) return toast("That file is too big. Paste the important part instead.");
+  const reader = new FileReader();
+  reader.onload = () => {
+    prep.material = String(reader.result).slice(0, 40000);
+    $("#prep-text").value = prep.material;
+  };
+  reader.readAsText(file);
+};
+ACT["prep-go"] = async () => {
+  prep.material = $("#prep-text").value.trim();
+  prep.subject = $("#prep-subject").value;
+  prep.error = "";
+  if (prep.material.length < 80) {
+    prep.error = "Add at least a few sentences of material (80+ characters).";
+    return render();
+  }
+  prep.busy = true;
+  render();
+  let r = null;
+  if (P.sample) {
+    try {
+      const d = await P.sample.json(
+        `You prepare exam practice for a university student using ONLY the material they provide (lecture slides, assignment briefs, rubrics, past papers).
+Never invent facts, topics or mark allocations that are not in the material. If something important is missing (for example, no marks are given), say so in "notFound".
+Reply with ONLY JSON:
+{"concepts": string[] (most important concepts, max 10),
+ "marks": [{"item": string, "marks": string}] (requirements/criteria with the marks or % exactly as written; empty if none),
+ "questions": [{"question": string, "marks": number, "type": "definition"|"explain"|"apply"|"code"|"compare"}] (6-8 exam-style questions, easy to hard, answerable from the material),
+ "notFound": string}
+
+Subject: ${prep.subject || "unknown"}
+
+<material>
+${prep.material}
+</material>`,
+        { modelTier: "default" },
+      );
+      if (d && Array.isArray(d.questions)) r = d;
+    } catch {}
+  }
+  prep.result = r || extractive(prep.material, !P.sample);
+  prep.busy = false;
+  touch();
+  save();
+  render();
+  document.getElementById("prep")?.scrollIntoView({ block: "start" });
+};
+function extractive(material, demo) {
+  const lines = material.split(/\r?\n/).map((l) => l.trim()).filter(Boolean);
+  const markRe = /\b\d{1,3}\s*(marks?|%)/i;
+  const marks = lines.filter((l) => markRe.test(l)).slice(0, 12).map((l) => ({ item: l.replace(/\(?\b\d{1,3}\s*(marks?|%)\)?/i, "").replace(/[-–:|]\s*$/, "").trim() || l, marks: l.match(markRe)[0] }));
+  const headings = lines
+    .map((l) => l.replace(/^(#+|\d+(\.\d+)*[.)]?|[-•*])\s*/, "").replace(/^(week|lecture|chapter|topic|unit)\s*\d+\s*[:.-]\s*/i, ""))
+    .filter((l) => l.length > 3 && l.length < 60 && !/[.?!,;:]$/.test(l) && /^[A-Z]/.test(l) && l.split(" ").length <= 7 && !markRe.test(l));
+  const defs = material
+    .split(/(?<=[.!?])\s+|\n+/)
+    .map((s) => s.trim().match(/^(?:An?\s+|The\s+)?([A-Za-z][\w\s-]{2,40}?)\s+(?:is|are|refers to|means)\s+(.{10,})$/))
+    .filter(Boolean)
+    .map((m) => m[1].trim());
+  const concepts = [...new Set([...headings, ...defs])].slice(0, 10);
+  const questions = [
+    ...defs.slice(0, 3).map((d) => ({ question: `Define "${d}" in your own words.`, marks: 2 })),
+    ...headings.slice(0, 3).map((h) => ({ question: `Explain "${h}" and give one example.`, marks: 5 })),
+    ...(concepts.length >= 2 ? [{ question: `Compare "${concepts[0]}" and "${concepts[1]}". When would you use each?`, marks: 6 }] : []),
+  ];
+  return {
+    concepts,
+    marks,
+    questions,
+    notFound: [marks.length ? "" : "No mark allocation found in this text.", demo ? "Demo mode: questions come from headings and definitions in your text. Open this page on claude.ai for deeper AI questions." : "The AI generator didn't answer, so these questions come from headings and definitions in your text."].filter(Boolean).join(" "),
+  };
+}
+
+/* ============================ Projects ============================ */
+const IDEAS = [
+  ["Student pass/fail predictor", "Predict if a student passes using study hours and attendance. Compare 2 models.", "Python, Pandas, scikit-learn"],
+  ["Lecture notes Q&A bot", "Ask questions about your own lecture PDFs and get answers with the slide number.", "Python, LLM API, embeddings"],
+  ["Malaysia food price dashboard", "Clean a public dataset and show price trends by state.", "Pandas, Streamlit"],
+];
+const STATUS = { idea: "💡 Idea", building: "🔨 Building", done: "✅ Done" };
+let editingProject = null;
+let projError = "";
+const draft = { title: "", description: "", stack: "", github: "", demo: "" };
+function checkUrl(u, gh) {
+  if (!u) return null;
+  let url;
+  try {
+    url = new URL(u);
+  } catch {
+    return "must be a full link starting with https://";
+  }
+  if (url.protocol !== "https:") return "must start with https://";
+  if (gh && !/^(www\.)?github\.com$/.test(url.hostname)) return "must be a github.com link";
+  return "";
+}
+VIEWS.projects = () => {
+  const done = S.projects.filter((p) => p.status === "done").length;
+  return `<header style="margin-bottom:1.5rem"><h1>Projects</h1><p class="muted" style="margin-top:.3rem">${S.projects.length} project${S.projects.length === 1 ? "" : "s"}, ${done} finished. A small finished project beats a big unfinished one.</p></header>
+  <div class="grid g-side">
+    <section class="card" style="height:fit-content"><h2>Add a project</h2>
+      <form data-form="project" class="stack-sm" style="margin-top:.8rem">
+        <label class="field"><span>Title</span><input name="title" required maxlength="100" class="input" value="${esc(draft.title)}"></label>
+        <label class="field"><span>What does it do?</span><textarea name="description" rows="3" maxlength="1000" class="input">${esc(draft.description)}</textarea></label>
+        <label class="field"><span>Tools</span><input name="stack" maxlength="200" class="input" placeholder="Python, Pandas…" value="${esc(draft.stack)}"></label>
+        <label class="field"><span>GitHub link</span><input name="github" type="url" class="input" placeholder="https://github.com/you/repo" value="${esc(draft.github)}"></label>
+        <label class="field"><span>Demo link</span><input name="demo" type="url" class="input" placeholder="https://…" value="${esc(draft.demo)}"></label>
+        <button class="btn btn-primary btn-block">Add project</button>
+      </form>
+      <div style="margin-top:1.2rem;padding-top:1rem;border-top:1px solid var(--line)"><p class="bold">Need an idea?</p>
+        <ul class="list" style="margin-top:.5rem">${IDEAS.map((i, n) => `<li><button class="item" style="width:100%;text-align:left;background:var(--card);cursor:pointer" data-act="idea" data-n="${n}"><span class="bold">${esc(i[0])}</span><span class="small muted" style="display:block">${esc(i[1])}</span></button></li>`).join("")}</ul></div>
+    </section>
+    <div class="stack">
+      ${projError ? `<p class="note bad" role="alert">${esc(projError)}</p>` : ""}
+      ${S.projects.length ? "" : `<div class="empty"><p class="bold">No projects yet</p><p class="muted">Pick one idea, keep it small, and finish it.</p></div>`}
+      ${S.projects
+        .map(
+          (p) => `<section class="card">
+        <div class="row between" style="align-items:flex-start"><div><h3 style="font-size:1.3rem">${esc(p.title)}</h3>${p.stack ? `<p class="small muted">${esc(p.stack)}</p>` : ""}</div>
+          <label class="sr-only" for="ps-${p.id}">Status</label><select id="ps-${p.id}" class="input" style="width:auto" data-change="proj-status" data-id="${p.id}">${Object.entries(STATUS).map(([k, v]) => `<option value="${k}" ${p.status === k ? "selected" : ""}>${v}</option>`).join("")}</select></div>
+        ${p.description ? `<p style="margin-top:.5rem;max-width:70ch">${esc(p.description)}</p>` : ""}
+        ${
+          editingProject === p.id
+            ? `<form data-form="proj-links" data-id="${p.id}" class="grid g-2" style="gap:.5rem;margin-top:.8rem">
+                <label><span class="sr-only">GitHub link</span><input name="github" type="url" class="input" value="${esc(p.github || "")}" placeholder="https://github.com/…"></label>
+                <label><span class="sr-only">Demo link</span><input name="demo" type="url" class="input" value="${esc(p.demo || "")}" placeholder="Demo https://…"></label>
+                <div class="row"><button class="btn btn-primary">Save links</button><button type="button" class="btn btn-ghost" data-act="proj-edit" data-id="">Cancel</button></div></form>`
+            : `<div class="row" style="margin-top:.8rem">
+                ${p.github ? `<a class="btn btn-secondary" href="${esc(p.github)}" target="_blank" rel="noopener noreferrer">GitHub</a>` : `<span class="small muted">No GitHub link</span>`}
+                ${p.demo ? `<a class="btn btn-secondary" href="${esc(p.demo)}" target="_blank" rel="noopener noreferrer">Demo</a>` : ""}
+                <button class="btn btn-ghost" data-act="proj-edit" data-id="${p.id}">Edit links</button>
+                <button class="btn btn-danger" data-act="proj-del" data-id="${p.id}">Delete</button></div>`
+        }</section>`,
+        )
+        .join("")}
+    </div>
+  </div>`;
+};
+FORM.project = (f, fd) => {
+  const d = Object.fromEntries(["title", "description", "stack", "github", "demo"].map((k) => [k, String(fd.get(k) || "").trim()]));
+  Object.assign(draft, d);
+  const e1 = checkUrl(d.github, true);
+  const e2 = checkUrl(d.demo, false);
+  projError = e1 ? `GitHub link ${e1}.` : e2 ? `Demo link ${e2}.` : "";
+  if (!d.title) projError = "Title is required.";
+  if (projError) return render();
+  S.projects.unshift({ id: uid(), title: d.title.slice(0, 100), description: d.description.slice(0, 1000), stack: d.stack.slice(0, 200), status: "idea", github: d.github || null, demo: d.demo || null, at: Date.now() });
+  Object.assign(draft, { title: "", description: "", stack: "", github: "", demo: "" });
+  touch();
+  checkAchievements();
+  save();
+  render();
+};
+ACT.idea = (el) => {
+  const [t, d, s] = IDEAS[Number(el.dataset.n)];
+  Object.assign(draft, { title: t, description: d, stack: s });
+  render();
+};
+CHANGE["proj-status"] = (el) => {
+  const p = S.projects.find((x) => x.id === el.dataset.id);
+  if (!p) return;
+  p.status = el.value;
+  touch();
+  save();
+};
+ACT["proj-edit"] = (el) => {
+  editingProject = el.dataset.id || null;
+  projError = "";
+  render();
+};
+FORM["proj-links"] = (f, fd) => {
+  const p = S.projects.find((x) => x.id === f.dataset.id);
+  const gh = String(fd.get("github") || "").trim();
+  const demo = String(fd.get("demo") || "").trim();
+  const e1 = checkUrl(gh, true);
+  const e2 = checkUrl(demo, false);
+  projError = e1 ? `GitHub link ${e1}.` : e2 ? `Demo link ${e2}.` : "";
+  if (!projError) {
+    p.github = gh || null;
+    p.demo = demo || null;
+    editingProject = null;
+    save();
+  }
+  render();
+};
+ACT["proj-del"] = (el) => {
+  const p = S.projects.find((x) => x.id === el.dataset.id);
+  if (!p || !confirm(`Delete ${p.title}?`)) return;
+  S.projects = S.projects.filter((x) => x.id !== p.id);
+  save();
+  render();
+};
+
+/* ============================ Profile ============================ */
+VIEWS.profile = () => {
+  const l = lp(S.xp);
+  const skills = mastery().filter((c) => c.total > 0);
+  const recent = S.mistakes.filter((m) => !m.resolved).slice(-6).reverse();
+  const earned = C.ACHIEVEMENTS.filter((a) => S.achievements[a.id]).length;
+  return `<header style="margin-bottom:1.5rem"><h1>${esc(P.name || "Your profile")}</h1><p class="muted" style="margin-top:.3rem">${P.mode === "account" ? "Progress is saved to your claude.ai account and follows you to any device." : "Progress is saved in this browser only."}</p></header>
+  <div class="stack">
+    ${accessBanner()}
+    <div class="grid g-main">
+      <section class="card"><div class="row between"><p style="font-family:var(--font-display);font-size:2.6rem;font-weight:800">Level ${l.level}</p><p style="font-size:1.1rem"><span aria-hidden="true">🔥</span> ${streak()}-day streak</p></div>
+        <div style="margin-top:.6rem">${xpbar(l.current, l.needed, "lg")}</div>
+        <p class="muted" style="margin-top:.5rem">${S.xp} XP total, ${l.needed - l.current} XP to level ${l.level + 1}</p></section>
+      <section class="card"><h2>Recurring mistakes</h2>${recent.length ? `<ul class="list small" style="margin-top:.6rem">${recent.map((m) => `<li><span class="bold">${esc(m.topic)}:</span> <span class="muted">${esc(m.detail)}</span></li>`).join("")}</ul>` : `<p class="muted" style="margin-top:.6rem">No open mistakes.</p>`}</section>
+    </div>
+    <section class="card"><h2>Skills</h2><ul class="grid g-2 list" style="gap:1rem;margin-top:.8rem">${skills.map((s) => `<li style="margin:0"><div class="row between" style="margin-bottom:.3rem"><span class="bold">${s.icon} ${esc(s.title)}</span><span class="small muted">${s.mastery}%</span></div>${pbar(s.mastery, s.title + " mastery", s.mastery === 100)}</li>`).join("")}</ul></section>
+    <section class="card"><h2>Achievements (${earned}/${C.ACHIEVEMENTS.length})</h2>
+      <ul class="grid g-3 list" style="gap:.75rem;margin-top:.8rem">${C.ACHIEVEMENTS.map((a) => {
+        const got = S.achievements[a.id];
+        return `<li class="item row" style="margin:0;flex-wrap:nowrap;${got ? "border-color:var(--marker);background:var(--marker-soft)" : "opacity:.55"}"><span style="font-size:1.8rem;${got ? "" : "filter:grayscale(1)"}" aria-hidden="true">${a.icon}</span><span><span class="bold" style="display:block">${esc(a.title)}${got ? "" : '<span class="sr-only"> (locked)</span>'}</span><span class="small muted">${esc(a.description)}</span></span></li>`;
+      }).join("")}</ul></section>
+    <section class="card"><h2>Your data</h2><p class="muted" style="margin-top:.4rem">Only you can see your progress, CGPA tasks and projects. The leaderboard shows your XP, level and streak to people who open this page.</p>
+      <div class="row" style="margin-top:.9rem">
+        <button class="btn btn-secondary" data-act="export">Export progress</button>
+        <label class="btn btn-secondary" style="cursor:pointer">Import progress<input type="file" accept=".json,application/json" class="sr-only" data-change="import"></label>
+        <button class="btn btn-danger" style="border:2px solid var(--red)" data-act="reset">Reset all progress</button>
+      </div>
+      <div id="export-box"></div></section>
+  </div>`;
+};
+ACT.export = async () => {
+  const json = JSON.stringify({ app: "ai-quest", exportedAt: new Date().toISOString(), state: S }, null, 2);
+  const dl = await use("downloads");
+  if (dl) {
+    try {
+      await dl.save({ filename: `ai-quest-progress-${today()}.json`, data: json });
+      return;
+    } catch (e) {
+      if (e && e.code === "cancelled") return;
+    }
+  }
+  $("#export-box").innerHTML = `<label class="field" style="display:block;margin-top:.8rem"><span>Copy this text and save it somewhere safe</span><textarea class="input mono small" rows="6" readonly>${esc(json)}</textarea></label>`;
+  $("#export-box textarea").select();
+};
+CHANGE.import = (el) => {
+  const file = el.files?.[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    try {
+      const data = JSON.parse(String(reader.result));
+      const incoming = data && data.app === "ai-quest" ? data.state : null;
+      if (!incoming || typeof incoming !== "object") throw new Error("bad file");
+      const next = normalize(incoming);
+      if (!confirm(`Replace your current progress (${S.xp} XP) with the imported progress (${next.xp} XP)?`)) return;
+      S = next;
+      save();
+      renderChrome();
+      render();
+      toast("Progress imported.");
+    } catch {
+      toast("That file isn't an AI Quest progress export.");
+    }
+  };
+  reader.readAsText(file);
+  el.value = "";
+};
+ACT.reset = () => {
+  if (!confirm("Delete all your XP, progress, CGPA tasks and projects? This cannot be undone.")) return;
+  S = blank();
+  for (const q of QUESTS) localSet(draftKey(q.id), q.starterCode);
+  save();
+  renderChrome();
+  render();
+  toast("Progress reset.");
+};
+
+/* ============================ Leaderboard ============================ */
+let profileNames = {};
+VIEWS.leaderboard = () => {
+  const rows = P.leaderboard ? [...P.leaderboard] : [];
+  const meId = P.uid || "me";
+  if (!rows.some((r) => r.id === meId)) rows.push({ id: meId, xp: S.xp, level: levelOf(S.xp), streak: streak() });
+  rows.sort((a, b) => (b.xp || 0) - (a.xp || 0));
+  const ids = rows.map((r) => r.id).filter((id) => id !== "me" && !(id in profileNames));
+  if (ids.length && P.user)
+    P.user.profiles(ids).then(
+      (ps) => {
+        let changed = false;
+        for (const id of ids) {
+          profileNames[id] = ps?.[id]?.name || "";
+          changed = true;
+        }
+        if (changed && route().name === "leaderboard") render();
+      },
+      () => {},
+    );
+  return `<header style="margin-bottom:1.5rem"><h1>Leaderboard</h1><p class="muted" style="margin-top:.3rem">Everyone who opens this page and earns XP shows up here. Compete with your past self first.</p></header>
+    ${P.leaderboard ? "" : `<p class="note info" style="margin-bottom:1rem">The shared leaderboard needs the claude.ai connection. Showing only you for now.</p>`}
+    <div class="card flush scroll-x"><table style="min-width:480px"><thead><tr><th>Rank</th><th>Name</th><th style="text-align:right">XP</th><th style="text-align:right">Level</th><th style="text-align:right">Streak</th></tr></thead>
+    <tbody>${rows
+      .map((r, i) => {
+        const me = r.id === meId;
+        const name = me ? P.name || "You" : profileNames[r.id] || "Someone";
+        return `<tr class="${me ? "me" : ""}" ${me ? 'aria-current="true"' : ""}><td style="font-family:var(--font-display);font-size:1.1rem;font-weight:800">${i < 3 ? ["🥇", "🥈", "🥉"][i] : i + 1}</td><td>${esc(name)}${me ? " (you)" : ""}</td><td style="text-align:right">${me ? S.xp : r.xp || 0}</td><td style="text-align:right">${me ? levelOf(S.xp) : r.level || 1}</td><td style="text-align:right">🔥 ${me ? streak() : r.streak || 0}</td></tr>`;
+      })
+      .join("")}</tbody></table></div>`;
+};
+
+/* ============================ boot ============================ */
+(function boot() {
+  const raw = localGet(LOCAL_KEY);
+  if (raw) {
+    try {
+      S = normalize(JSON.parse(raw));
+    } catch {}
+  }
+  lastRoute = location.hash;
+  render();
+  initPlatform();
+})();
+
+</script>
+</body>
+</html>
